@@ -1,8 +1,14 @@
+//
+// Created by o.le on 01.02.25.
+//
+
 #include "Application.h"
 #include "Game.h"
 
 #include <SFML/Window/Event.hpp>
 
+#include "GameScene.h"
+#include "../include/SpaceScene.h"
 
 constexpr int WINDOW_WIDTH = 1500;
 constexpr int WINDOW_HEIGHT = 900;
@@ -17,10 +23,13 @@ int Application::run()
                             sf::Style::Titlebar);
     window.setFramerateLimit(60);
 
-    sf::View view(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
-    window.setView(view);
+    sf::View default_space_camera(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+    window.setView(default_space_camera);
 
-    Game game(view);
+    Renderer renderer;
+    Game game(renderer);
+    SpaceScene space_scene(default_space_camera);
+    game.set_scene(&space_scene);
 
     while (window.isOpen())
     {

@@ -1,3 +1,7 @@
+//
+// Created by o.le on 01.02.25.
+//
+
 #ifndef APPLICATION_H
 #define APPLICATION_H
 

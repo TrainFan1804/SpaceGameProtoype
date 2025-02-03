@@ -5,12 +5,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <Galaxy.h>
-#include <PlayerShip.h>
+#include "GameScene.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Text.hpp>
+
+#include "Renderer.h"
 
 /**
  *  This is the game class. The game class contains everything that is related to
@@ -20,17 +19,14 @@
 class Game
 {
 public:
-    Game(sf::View &init_view);
+    Game(Renderer &renderer);
+    ~Game();
+    void set_scene(GameScene *scene);
     void update();
     void render(sf::RenderWindow &window);
 private:
-    sf::View &_view;
-    PlayerShip _player_ship;
-    Galaxy _galaxy;
-    bool _is_landing_pressed;
-    bool _planet_in_range;
-    sf::Font _font;
-    sf::Text _text;
+    GameScene *_current_scene;
+    Renderer _renderer;
 };
 
 #endif //GAME_H

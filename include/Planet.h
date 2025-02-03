@@ -14,7 +14,7 @@
 /**
  *  This class represent a planet in the game.
  */
-class Planet
+class Planet : public sf::Drawable
 {
 public:
     Planet();
@@ -22,10 +22,11 @@ public:
     Planet(const std::string &planet_name, const sf::Vector2f &size);
     const sf::Vector2f &getPos() const;
     void setPos(const sf::Vector2f &pos);
-    void draw(sf::RenderWindow &window);
 private:
     std::string _planet_name;
-    sf::RectangleShape _planet_rec;
+    mutable sf::RectangleShape _planet_rec;
+
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 
 #endif //PLANET_H

@@ -24,11 +24,11 @@ const std::string &Galaxy::getGalaxyName()
     return _galaxy_name;
 }
 
-void Galaxy::drawGalaxy(sf::RenderWindow &window)
+void Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     for (auto &planet: _planets)
     {
-        planet.draw(window);
+        target.draw(planet);    // this will probably make alot of weird things...
     }
 }
 

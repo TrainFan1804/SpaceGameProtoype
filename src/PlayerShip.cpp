@@ -60,9 +60,10 @@ void PlayerShip::move(const float x_dir, const float y_dir)
     _ship_rec.setRotation(newAngle);
 }
 
-void PlayerShip::draw(sf::RenderWindow &window)
+
+void PlayerShip::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    window.draw(_ship_rec);
+    target.draw(_ship_rec);
 }
 
 float calculateDistanceShipToPlanet(const PlayerShip &player, const Planet &target_planet)

@@ -32,8 +32,8 @@ void Planet::setPos(const sf::Vector2f &pos)
     _planet_rec.setPosition(pos);
 }
 
-void Planet::draw(sf::RenderWindow &window)
+void Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     _planet_rec.rotate(0.2f);
-    window.draw(_planet_rec);
+    target.draw(_planet_rec);
 }

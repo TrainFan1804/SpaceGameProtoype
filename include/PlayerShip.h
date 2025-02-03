@@ -14,11 +14,13 @@ class Planet;
 /**
  *  This class represent the players ship in the game.
  */
-class PlayerShip
+class PlayerShip : public sf::Drawable
 {
 public:
     PlayerShip(const sf::Vector2f &size);
+
     const sf::Vector2f &getPos() const;
+
     void setPos(const sf::Vector2f &pos);
 
     /**
@@ -28,9 +30,10 @@ public:
      * @param   y_dir Will always be 1, -1 or 0 because this method works with normalized vectors.
      */
     void move(const float x_dir, const float y_dir);
-    void draw(sf::RenderWindow &window);
 private:
     sf::RectangleShape _ship_rec;
+
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 
 /**

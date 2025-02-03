@@ -17,7 +17,7 @@
  *  planets the player can interact with. RN this is mainly a wrapper class for
  *  multiple planet instances.
  */
-class Galaxy
+class Galaxy : public sf::Drawable
 {
 public:
     Galaxy(const std::string &galaxy_name, int planet_amount);
@@ -25,13 +25,6 @@ public:
     const std::string &getGalaxyName();
 
     std::vector<Planet> &getGalaxyPlanets();
-
-    /**
-     *  Will draw all planets of a galaxy into a window.
-     *
-     * @param window  The window the planets are draw into.
-     */
-    void drawGalaxy(sf::RenderWindow &window);
 private:
     std::string _galaxy_name;
     std::vector<Planet> _planets;
@@ -44,6 +37,8 @@ private:
      * @param seed  The seed of the galaxy.
      */
     void generatePlanets(int max_amount, int seed);
+
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 
 #endif //GALAXY_H

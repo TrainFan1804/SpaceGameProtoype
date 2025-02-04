@@ -13,16 +13,16 @@ include_directories(include)
 file(GLOB_RECURSE CODE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
 add_executable("${CMAKE_PROJECT_NAME}" "${CODE_SOURCES}"
-        src/Planet.cpp
-        include/Planet.h
-        src/Application.cpp
-        include/Application.h
-        include/GameScene.h
-        src/SpaceScene.cpp
-        include/SpaceScene.h
-        src/Renderer.cpp
-        include/Renderer.h
-        include/GameObject.h
+#        src/Planet.cpp
+#        include/Planet.h
+#        src/Application.cpp
+#        include/Application.h
+#        include/scenes/GameScene.h
+#        src/scenes/SpaceScene.cpp
+#        include/scenes/SpaceScene.h
+#        src/Renderer.cpp
+#        include/Renderer.h
+#        include/GameObject.h
 )
 
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")

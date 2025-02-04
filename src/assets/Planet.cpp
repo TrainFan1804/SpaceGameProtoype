@@ -2,7 +2,7 @@
 // Created by o.le on 01.02.25.
 //
 
-#include "Planet.h"
+#include "assets/Planet.h"
 
 Planet::Planet()
 {

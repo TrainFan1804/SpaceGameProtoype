@@ -24,6 +24,11 @@ void Game::set_scene(GameScene *scene)
     _current_scene = scene;
 }
 
+void Game::handleEvent(sf::Event &event)
+{
+    _current_scene->eventHandling(event);
+}
+
 void Game::update()
 {
     _current_scene->play();
@@ -33,9 +38,4 @@ void Game::render(sf::RenderWindow &window)
 {
     _current_scene->setupRenderer(_renderer);
     _renderer.render(window, *_current_scene);
-    // window.setView(_camera);
-    // _galaxy.drawGalaxy(window);
-    // _player_ship.draw(window);
-    // if (_planet_in_range)
-    //     window.draw(_text);
 }

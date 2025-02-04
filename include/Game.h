@@ -5,11 +5,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "GameScene.h"
+#include "Renderer.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
-
-#include "Renderer.h"
 
 /**
  *  This is the game class. The game class contains everything that is related to
@@ -20,9 +18,30 @@ class Game
 {
 public:
     Game(Renderer &renderer);
+
     ~Game();
+
     void set_scene(GameScene *scene);
+
+    /**
+     * Will handle SFML events. Mostly key inputs.
+     *
+     * @param event The event to handle.
+     */
+    void handleEvent(sf::Event &event);
+
+    /**
+     * This method will be called to update the state of the current game scene.
+     * Will be called every frame.
+     */
     void update();
+
+    /**
+     *  This method will be called to render the current game scene.
+     *  Will be called every frame.
+     *
+     * @param window    The window that is rendered to.
+     */
     void render(sf::RenderWindow &window);
 private:
     GameScene *_current_scene;

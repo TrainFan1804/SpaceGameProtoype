@@ -2,8 +2,8 @@
 // Created by o.le on 01.02.25.
 //
 
-#include "PlayerShip.h"
-#include "Planet.h"
+#include "assets/PlayerShip.h"
+#include "assets/Planet.h"
 
 #include <cmath>
 

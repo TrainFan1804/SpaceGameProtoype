@@ -41,5 +41,6 @@ void Renderer::render(sf::RenderWindow &window, GameScene &render_scene)
     {
         window.draw(*pair.second);
     }
+    // The next line is actually pretty bad. TODO This can be fixed later.
     window.setView(render_scene.getCamera());
 }

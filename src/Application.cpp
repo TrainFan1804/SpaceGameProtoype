@@ -4,11 +4,10 @@
 
 #include "Application.h"
 #include "Game.h"
+#include "scenes/GameScene.h"
+#include "scenes/SpaceScene.h"
 
 #include <SFML/Window/Event.hpp>
-
-#include "GameScene.h"
-#include "../include/SpaceScene.h"
 
 constexpr int WINDOW_WIDTH = 1500;
 constexpr int WINDOW_HEIGHT = 900;
@@ -39,7 +38,7 @@ int Application::run()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
+        game.handleEvent(event);
         game.update();
 
         window.clear();

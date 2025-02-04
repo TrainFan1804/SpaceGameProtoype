@@ -2,7 +2,7 @@
 // Created by o.le on 03.02.25.
 //
 
-#include "SpaceScene.h"
+#include "scenes/SpaceScene.h"
 
 #include <iostream>
 #include <memory>
@@ -31,7 +31,7 @@ SpaceScene::SpaceScene(sf::View &init_camera)
     _text.setFillColor(sf::Color::Blue);
 }
 
-void SpaceScene::play()
+void SpaceScene::eventHandling(sf::Event &event)
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         _player_ship.move(-1, 0);
@@ -43,7 +43,22 @@ void SpaceScene::play()
         _player_ship.move(0, 1);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
         _galaxy = Galaxy("Galaxy 2", 2);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+    {
+        if (!_is_landing_pressed)
+        {
+            std::cout << "Starting landing sequence.." << std::endl;
+            _is_landing_pressed = true;
+        }
+    }
+    else
+    {
+        _is_landing_pressed = false;
+    }
+}
 
+void SpaceScene::play()
+{
     _camera.setCenter(_player_ship.getPos());
 
     /**
@@ -77,18 +92,6 @@ void SpaceScene::play()
         {
             _planet_in_range = true;
             _text.setPosition(nearest_planet->getPos().x, nearest_planet->getPos().y - 100);
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-            {
-                if (!_is_landing_pressed)
-                {
-                    std::cout << "Starting landing sequence.." << std::endl;
-                    _is_landing_pressed = true;
-                }
-            }
-            else
-            {
-                _is_landing_pressed = false;
-            }
         }
     }
     else

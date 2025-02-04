@@ -6,17 +6,24 @@
 #define SPACESCENE_H
 
 #include "GameScene.h"
-#include "Galaxy.h"
-#include "PlayerShip.h"
+#include "assets/Galaxy.h"
+#include "assets/PlayerShip.h"
 #include "Renderer.h"
 
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+/**
+ * The SpaceScene could be called the "default" scene because that is the scene
+ * the player will spend probably most of his time. The SpaceScene represent
+ * the state of the game where the player can control his ship and explore
+ * different systems.
+ */
 class SpaceScene : public GameScene
 {
 public:
     SpaceScene(sf::View &init_camera);
+    void eventHandling(sf::Event &event) override;
     void play() override;
     void setupRenderer(Renderer &renderer) override;
     sf::View &getCamera() const override;

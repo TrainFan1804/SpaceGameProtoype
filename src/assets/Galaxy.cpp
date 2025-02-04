@@ -2,8 +2,8 @@
 // Created by o.le on 02.02.25.
 //
 
-#include "Galaxy.h"
-#include "Planet.h"
+#include "assets/Galaxy.h"
+#include "assets/Planet.h"
 
 #include <random>
 

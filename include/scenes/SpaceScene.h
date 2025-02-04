@@ -6,9 +6,9 @@
 #define SPACESCENE_H
 
 #include "GameScene.h"
+#include "Renderer.h"
 #include "assets/Galaxy.h"
 #include "assets/PlayerShip.h"
-#include "Renderer.h"
 
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -23,9 +23,13 @@ class SpaceScene : public GameScene
 {
 public:
     SpaceScene(sf::View &init_camera);
+
     void eventHandling(sf::Event &event) override;
+
     void play() override;
+
     void setupRenderer(Renderer &renderer) override;
+
     sf::View &getCamera() const override;
 private:
     sf::View &_camera;

@@ -13,7 +13,9 @@ include_directories(include)
 file(GLOB_RECURSE CODE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
 add_executable("${CMAKE_PROJECT_NAME}" "${CODE_SOURCES}"
-#        src/Planet.cpp
+        include/utils/RandomUtils.h
+        src/utils/RandomUtils.cpp
+        #        src/Planet.cpp
 #        include/Planet.h
 #        src/Application.cpp
 #        include/Application.h

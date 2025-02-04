@@ -17,7 +17,7 @@ constexpr int WINDOW_HEIGHT = 900;
  */
 SpaceScene::SpaceScene(sf::View &init_camera)
     : _player_ship(sf::Vector2f(100, 200)),
-      _galaxy("Galaxy 1", 5),
+      _galaxy("Galaxy 1"),
       _is_landing_pressed(false), _planet_in_range(false), _camera(init_camera)
 {
     _player_ship.setPos(sf::Vector2f((WINDOW_WIDTH - 100) / 2, (WINDOW_HEIGHT - 200) / 2));
@@ -42,7 +42,7 @@ void SpaceScene::eventHandling(sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         _player_ship.move(0, 1);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        _galaxy = Galaxy("Galaxy 2", 2);
+        _galaxy = Galaxy::createGalaxy();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
     {
         if (!_is_landing_pressed)
@@ -71,7 +71,7 @@ void SpaceScene::play()
      *  I could finaly let it work correctly. To interact with a planet the\
      *  ship must be in a range from 0 to 100 units away from the targeting
      *  planet.
-     *  TODO I need a fine abstraction for this one.
+     *  TODO I need a find abstraction for this one.
      */
     std::unique_ptr<Planet> nearest_planet = nullptr; // TODO I could put this into the PlayerShip class
     nearest_planet.reset(); // make sure the unique_pointer hold nothing.
@@ -103,7 +103,6 @@ void SpaceScene::play()
 
 void SpaceScene::setupRenderer(Renderer &renderer)
 {
-    // TODO add planets and ship just once
     renderer.addAsset(&_galaxy);
     renderer.addAsset(&_player_ship);
     if (_planet_in_range)

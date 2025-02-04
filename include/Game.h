@@ -21,7 +21,7 @@ public:
 
     ~Game();
 
-    void set_scene(GameScene *scene);
+    void setScene(GameScene *scene);
 
     /**
      * Will handle SFML events. Mostly key inputs.

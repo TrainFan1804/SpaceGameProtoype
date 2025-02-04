@@ -19,7 +19,7 @@ Game::~Game()
 }
 
 
-void Game::set_scene(GameScene *scene)
+void Game::setScene(GameScene *scene)
 {
     _current_scene = scene;
 }

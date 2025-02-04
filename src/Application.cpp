@@ -28,7 +28,7 @@ int Application::run()
     Renderer renderer;
     Game game(renderer);
     SpaceScene space_scene(default_space_camera);
-    game.set_scene(&space_scene);
+    game.setScene(&space_scene);
 
     while (window.isOpen())
     {

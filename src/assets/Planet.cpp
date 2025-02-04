@@ -4,10 +4,6 @@
 
 #include "assets/Planet.h"
 
-Planet::Planet()
-{
-}
-
 Planet::Planet(const Planet &planet)
     : _planet_name(planet._planet_name), _planet_rec(planet._planet_rec)
 {

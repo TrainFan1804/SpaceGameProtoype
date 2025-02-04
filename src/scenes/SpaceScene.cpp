@@ -9,6 +9,8 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
+#include "ui/GalaxyJumpUI.h"
+
 constexpr int WINDOW_WIDTH = 1500;
 constexpr int WINDOW_HEIGHT = 900;
 
@@ -18,7 +20,8 @@ constexpr int WINDOW_HEIGHT = 900;
 SpaceScene::SpaceScene(sf::View &init_camera)
     : _player_ship(sf::Vector2f(100, 200)),
       _galaxy("Galaxy 1"),
-      _is_landing_pressed(false), _planet_in_range(false), _camera(init_camera)
+      _is_landing_pressed(false), _galaxy_map_pressed(false),
+      _planet_in_range(false), _camera(init_camera)
 {
     _player_ship.setPos(sf::Vector2f((WINDOW_WIDTH - 100) / 2, (WINDOW_HEIGHT - 200) / 2));
     if (!_font.loadFromFile(RESOURCES_PATH "font/OpenSans-Medium.ttf"))
@@ -42,7 +45,26 @@ void SpaceScene::eventHandling(sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         _player_ship.move(0, 1);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-        _galaxy = Galaxy::createGalaxy();
+    {
+        if (!_galaxy_map_pressed)
+        {
+            if (_galaxy_jump_ui.isVisible())
+            {
+                _galaxy_jump_ui.hide();
+            }
+            else
+            {
+                _galaxy_jump_ui.show();
+                // _galaxy = Galaxy::createGalaxy();
+            }
+        }
+        _galaxy_map_pressed = true;
+    }
+    if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Q)
+    {
+        _galaxy_map_pressed = false;
+    }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
     {
         if (!_is_landing_pressed)
@@ -59,7 +81,9 @@ void SpaceScene::eventHandling(sf::Event &event)
 
 void SpaceScene::play()
 {
+    // make sure the camera is centered to the ship
     _camera.setCenter(_player_ship.getPos());
+    _galaxy_jump_ui.setCenter(_player_ship.getPos());
 
     /**
      *  In this big if statement is a very rudimental landing system for
@@ -114,6 +138,7 @@ void SpaceScene::setupRenderer(Renderer &renderer)
         // remove text from render pipeline
         renderer.removeAsset(&_text);
     }
+    renderer.addAsset(&_galaxy_jump_ui);
 }
 
 sf::View &SpaceScene::getCamera() const

@@ -9,9 +9,11 @@
 #include "Renderer.h"
 #include "assets/Galaxy.h"
 #include "assets/PlayerShip.h"
+#include "ui/GalaxyJumpUI.h"
 
-#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Font.hpp>
+
 
 /**
  * The SpaceScene could be called the "default" scene because that is the scene
@@ -32,10 +34,12 @@ public:
 
     sf::View &getCamera() const override;
 private:
-    sf::View &_camera;
+    sf::View &_camera;  // I should remove the reference and create it in the scene directly
     PlayerShip _player_ship;
     Galaxy _galaxy;
+    GalaxyJumpUI _galaxy_jump_ui;
     bool _is_landing_pressed;
+    bool _galaxy_map_pressed;
     bool _planet_in_range;
     sf::Font _font;
     sf::Text _text;

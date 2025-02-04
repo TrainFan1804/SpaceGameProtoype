@@ -10,6 +10,14 @@ Renderer::Renderer()
 
 }
 
+/*
+ *  TODO There should be a add method where I can put an element at a custom
+ *  TODO index. I want to change the priorities of the render pipeline.
+ *  TODO This can be very dangerous and could lead to unexpected behavior.
+ *
+ *  Alternative: All objects from UI classes should be loaded with the highest
+ *  priority so they rendered on top of the other stuff.
+ */
 void Renderer::addAsset(sf::Drawable *asset)
 {
     for (const auto &pair : _assets)

@@ -15,6 +15,8 @@ file(GLOB_RECURSE CODE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/sr
 add_executable("${CMAKE_PROJECT_NAME}" "${CODE_SOURCES}"
         include/utils/RandomUtils.h
         src/utils/RandomUtils.cpp
+        src/ui/GalaxyJumpUI.cpp
+        include/ui/GalaxyJumpUI.h
         #        src/Planet.cpp
 #        include/Planet.h
 #        src/Application.cpp

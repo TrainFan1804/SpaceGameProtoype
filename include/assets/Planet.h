@@ -17,7 +17,8 @@
 class Planet : public sf::Drawable
 {
 public:
-    Planet();
+    Planet() = default;
+    ~Planet() = default;
     Planet(const Planet& other);
     Planet(const std::string &planet_name, const sf::Vector2f &size);
     const sf::Vector2f &getPos() const;

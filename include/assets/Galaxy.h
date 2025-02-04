@@ -37,6 +37,7 @@ public:
      * @param planet_amount The amount of planets in the new galaxy.
      */
     Galaxy(const std::string &galaxy_name, int planet_amount);
+    ~Galaxy() = default;
 
     const std::string &getGalaxyName();
 

@@ -30,6 +30,8 @@ public:
      * @param   y_dir Will always be 1, -1 or 0 because this method works with normalized vectors.
      */
     void move(const float x_dir, const float y_dir);
+
+    void controlMoving();
 private:
     sf::RectangleShape _ship_rec;
 

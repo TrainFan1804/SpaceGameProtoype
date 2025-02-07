@@ -5,7 +5,7 @@
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
 
-#include "../Renderer.h"
+#include "core/renderer/Renderer.h"
 
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Window/Event.hpp>

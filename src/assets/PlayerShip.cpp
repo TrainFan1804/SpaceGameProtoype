@@ -7,6 +7,8 @@
 
 #include <cmath>
 
+#include <SFML/Window/Keyboard.hpp>
+
 PlayerShip::PlayerShip(const sf::Vector2f &size)
 {
     _ship_rec.setSize(size);
@@ -60,6 +62,17 @@ void PlayerShip::move(const float x_dir, const float y_dir)
     _ship_rec.setRotation(newAngle);
 }
 
+void PlayerShip::controlMoving()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        move(-1, 0);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        move(1, 0);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        move(0, -1);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        move(0, 1);
+}
 
 void PlayerShip::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {

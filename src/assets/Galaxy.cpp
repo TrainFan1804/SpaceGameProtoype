@@ -23,7 +23,7 @@ Galaxy::Galaxy(const std::string &galaxy_name, int planet_amount)
     : _galaxy_name(galaxy_name)
 {
     _planets.reserve(planet_amount);
-    generatePlanets(planet_amount); // TODO seed should be randomized
+    generatePlanets(planet_amount);
 }
 
 std::vector<Planet> &Galaxy::getGalaxyPlanets()

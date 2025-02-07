@@ -6,7 +6,7 @@
 #define SPACESCENE_H
 
 #include "GameScene.h"
-#include "Renderer.h"
+#include "core/renderer/Renderer.h"
 #include "assets/Galaxy.h"
 #include "assets/PlayerShip.h"
 #include "ui/GalaxyJumpUI.h"
@@ -40,6 +40,7 @@ private:
     GalaxyJumpUI _galaxy_jump_ui;
     bool _is_landing_pressed;
     bool _galaxy_map_pressed;
+    bool _map_is_visible;
     bool _planet_in_range;
     sf::Font _font;
     sf::Text _text;

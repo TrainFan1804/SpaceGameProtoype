@@ -4,9 +4,6 @@
 
 #include "Game.h"
 
-constexpr int WINDOW_WIDTH = 1500;
-constexpr int WINDOW_HEIGHT = 900;
-
 Game::Game(Renderer &renderer)
     : _current_scene(nullptr), _renderer(renderer)
 {

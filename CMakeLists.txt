@@ -17,6 +17,12 @@ add_executable("${CMAKE_PROJECT_NAME}" "${CODE_SOURCES}"
         src/utils/RandomUtils.cpp
         src/ui/GalaxyJumpUI.cpp
         include/ui/GalaxyJumpUI.h
+        src/ui/UIButton.cpp
+        include/ui/UIButton.h
+        src/GameSettings.cpp
+        include/GameSettings.h
+        src/core/renderer/RendererEntry.cpp
+        include/core/renderer/RendererEntry.h
         #        src/Planet.cpp
 #        include/Planet.h
 #        src/Application.cpp

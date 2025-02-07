@@ -5,7 +5,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Renderer.h"
+#include "core/renderer/Renderer.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 

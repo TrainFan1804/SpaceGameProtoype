@@ -3,16 +3,14 @@
 //
 
 #include "scenes/SpaceScene.h"
+#include "ui/GalaxyJumpUI.h"
+#include "GameSettings.h"
 
 #include <iostream>
 #include <memory>
 
+#include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
-
-#include "ui/GalaxyJumpUI.h"
-
-constexpr int WINDOW_WIDTH = 1500;
-constexpr int WINDOW_HEIGHT = 900;
 
 /*
  *  This is a hell of a constructor...
@@ -21,9 +19,9 @@ SpaceScene::SpaceScene(sf::View &init_camera)
     : _player_ship(sf::Vector2f(100, 200)),
       _galaxy("Galaxy 1"),
       _is_landing_pressed(false), _galaxy_map_pressed(false),
-      _planet_in_range(false), _camera(init_camera)
+      _planet_in_range(false), _map_is_visible(false), _camera(init_camera)
 {
-    _player_ship.setPos(sf::Vector2f((WINDOW_WIDTH - 100) / 2, (WINDOW_HEIGHT - 200) / 2));
+    _player_ship.setPos(sf::Vector2f((Settings::WINDOW_WIDTH - 100) / 2, (Settings::WINDOW_HEIGHT - 200) / 2));
     if (!_font.loadFromFile(RESOURCES_PATH "font/OpenSans-Medium.ttf"))
     {
         throw std::runtime_error("Font could not be loaded");
@@ -36,14 +34,23 @@ SpaceScene::SpaceScene(sf::View &init_camera)
 
 void SpaceScene::eventHandling(sf::Event &event)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        _player_ship.move(-1, 0);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        _player_ship.move(1, 0);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        _player_ship.move(0, -1);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        _player_ship.move(0, 1);
+    if (!_map_is_visible)
+    {
+        _player_ship.controlMoving();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        {
+            if (!_is_landing_pressed)
+            {
+                std::cout << "Starting landing sequence.." << std::endl;
+                _is_landing_pressed = true;
+            }
+        }
+        else
+        {
+            _is_landing_pressed = false;
+        }
+    }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
     {
         if (!_galaxy_map_pressed)
@@ -51,31 +58,20 @@ void SpaceScene::eventHandling(sf::Event &event)
             if (_galaxy_jump_ui.isVisible())
             {
                 _galaxy_jump_ui.hide();
+                _map_is_visible = false;
             }
             else
             {
+                _map_is_visible = true;
                 _galaxy_jump_ui.show();
-                // _galaxy = Galaxy::createGalaxy();
+                _galaxy = Galaxy::createGalaxy();   // TODO should be work with btn press but to lazy rn to implement
             }
+            _galaxy_map_pressed = true;
         }
-        _galaxy_map_pressed = true;
     }
     if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Q)
     {
         _galaxy_map_pressed = false;
-    }
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-    {
-        if (!_is_landing_pressed)
-        {
-            std::cout << "Starting landing sequence.." << std::endl;
-            _is_landing_pressed = true;
-        }
-    }
-    else
-    {
-        _is_landing_pressed = false;
     }
 }
 
@@ -125,18 +121,34 @@ void SpaceScene::play()
     // end of planet landing calculation stuff
 }
 
+/*
+ *  This method is still not very good. This method will always be called when
+ *  drawing something to the screen but this method should just load the stuff
+ *  into the renderer. But some object will always be on the same address in memory
+ *  (e.g. the ship, the text (just there position etc. will change, but it's
+ *  still the same object)). So I need actually two? methods to load something into
+ *  the renderer. One for "static" objects like the ship and one for dynamically
+ *  created objects like the different planets.
+ */
 void SpaceScene::setupRenderer(Renderer &renderer)
 {
     renderer.addAsset(&_galaxy);
     renderer.addAsset(&_player_ship);
+    renderer.addAsset(&_text);
+    /*
+     *  Instead of removing and adding the text I should just toggle a
+     *  should render bool flag in my custom datastructure to determine if the
+     *  text should be drawn or not. Would also be more efficient than removing
+     *  and adding the asset everytime the ship is near a planet.
+     */
     if (_planet_in_range)
     {
-        renderer.addAsset(&_text);
+        renderer.activateRenderFor(&_text);
     }
     else
     {
-        // remove text from render pipeline
-        renderer.removeAsset(&_text);
+        // remove text from render pipeline but it's still in render buffer
+        renderer.deactivateRenderFor(&_text);
     }
     renderer.addAsset(&_galaxy_jump_ui);
 }

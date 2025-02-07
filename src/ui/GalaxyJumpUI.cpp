@@ -5,7 +5,8 @@
 #include "ui/GalaxyJumpUI.h"
 
 GalaxyJumpUI::GalaxyJumpUI()
-    : _is_visible(false)
+    : _is_visible(false),
+    _button("Jump", _font, [this]() { })
 {
     _menu_rec.setSize(sf::Vector2f(500, 500));
     _menu_rec.setFillColor(sf::Color::Yellow);
@@ -18,6 +19,8 @@ GalaxyJumpUI::GalaxyJumpUI()
     _text.setFont(_font);
     _text.setCharacterSize(20);
     _text.setFillColor(sf::Color::Black);
+
+    _button.setSize(100, 100);
 }
 
 void GalaxyJumpUI::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -30,6 +33,7 @@ void GalaxyJumpUI::draw(sf::RenderTarget &target, sf::RenderStates states) const
     if (!_is_visible) return;
     target.draw(_menu_rec);
     target.draw(_text);
+    target.draw(_button);
 }
 
 void GalaxyJumpUI::hide()
@@ -52,6 +56,5 @@ void GalaxyJumpUI::setCenter(const sf::Vector2f &center)
     sf::Vector2f new_pos(center.x - _menu_rec.getSize().x / 2, center.y - _menu_rec.getSize().y / 2);
     _menu_rec.setPosition(new_pos);
     _text.setPosition(_menu_rec.getPosition());
+    _button.setPos(_menu_rec.getPosition());
 }
-
-

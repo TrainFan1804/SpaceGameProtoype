@@ -21,7 +21,8 @@ public:
 
     void setSize(float width, float height);
     void setPos(const sf::Vector2f &pos);
-    void handleEvent(const sf::Event &event, const sf::RenderWindow &window);
+    sf::FloatRect getGlobalBounds() const;
+    void handleEvent();
 private:
     sf::RectangleShape _rect;
     sf::Text _text;

@@ -28,7 +28,12 @@ void UIButton::setSize(float width, float height)
     _rect.setSize(sf::Vector2f(width, height));
 }
 
-void UIButton::handleEvent(const sf::Event &event, const sf::RenderWindow &window)
+sf::FloatRect UIButton::getGlobalBounds() const
+{
+    return _rect.getGlobalBounds();
+}
+
+void UIButton::handleEvent()
 {
     std::cout << "Button pressed" << std::endl;
 }

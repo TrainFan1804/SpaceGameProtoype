@@ -4,6 +4,8 @@
 
 #include "ui/GalaxyJumpUI.h"
 
+#include <iostream>
+
 GalaxyJumpUI::GalaxyJumpUI()
     : _is_visible(false),
     _button("Jump", _font, [this]() { })
@@ -57,4 +59,12 @@ void GalaxyJumpUI::setCenter(const sf::Vector2f &center)
     _menu_rec.setPosition(new_pos);
     _text.setPosition(_menu_rec.getPosition());
     _button.setPos(_menu_rec.getPosition());
+}
+
+void GalaxyJumpUI::checkButtonClick(const sf::Vector2f &mouse_pos)
+{
+    if (!_is_visible) return;
+    // TODO still very buggy but it's working for now
+    if (_button.getGlobalBounds().contains(mouse_pos))
+        _button.handleEvent();
 }

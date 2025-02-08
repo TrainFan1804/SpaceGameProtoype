@@ -14,6 +14,8 @@
 
 /**
  * This is the UI Element for the "jump between galaxies" menu.
+ * Important note: The scene will check on his own if he should be drawn or handle
+ * anything that should only be visible when interact with it.
  *
  * TODO It's probably nice to have UI interface. No, not a interface I should
  * TODO create UI Elements at runtime via different objects per UI.
@@ -30,6 +32,8 @@ public:
     bool isVisible() const;
 
     void setCenter(const sf::Vector2f &center);
+
+    void checkButtonClick(const sf::Vector2f &mouse_pos);
 private:
     bool _is_visible;
     sf::RectangleShape _menu_rec;

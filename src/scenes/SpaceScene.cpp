@@ -51,27 +51,31 @@ void SpaceScene::eventHandling(sf::Event &event)
         }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && !_galaxy_map_pressed)
     {
-        if (!_galaxy_map_pressed)
+        if (_galaxy_jump_ui.isVisible())
         {
-            if (_galaxy_jump_ui.isVisible())
-            {
-                _galaxy_jump_ui.hide();
-                _map_is_visible = false;
-            }
-            else
-            {
-                _map_is_visible = true;
-                _galaxy_jump_ui.show();
-                _galaxy = Galaxy::createGalaxy();   // TODO should be work with btn press but to lazy rn to implement
-            }
-            _galaxy_map_pressed = true;
+            _galaxy_jump_ui.hide();
+            _map_is_visible = false;
         }
+        else
+        {
+            _map_is_visible = true;
+            _galaxy_jump_ui.show();
+            _galaxy = Galaxy::createGalaxy();   // TODO should be work with btn press but to lazy rn to implement
+        }
+        _galaxy_map_pressed = true;
     }
     if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Q)
     {
         _galaxy_map_pressed = false;
+    }
+
+    if (event.type == sf::Event::MouseButtonPressed
+        && event.mouseButton.button == sf::Mouse::Left)
+    {
+        sf::Vector2f mouse_vec(event.mouseButton.x, event.mouseButton.y);
+        _galaxy_jump_ui.checkButtonClick(mouse_vec);
     }
 }
 

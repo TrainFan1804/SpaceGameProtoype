@@ -38,8 +38,16 @@ private:
     PlayerShip _player_ship;
     Galaxy _galaxy;
     GalaxyJumpUI _galaxy_jump_ui;
+    /**
+     * This flag will be true if player press button for landing.
+     */
     bool _is_landing_pressed;
     bool _galaxy_map_pressed;
+    /**
+     * This flag will be true if the galaxy map is visible on the screen.
+     * Important for deactivation mechanism of movement and co. while map is
+     * open.
+     */
     bool _map_is_visible;
     bool _planet_in_range;
     sf::Font _font;

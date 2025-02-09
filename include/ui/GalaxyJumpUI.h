@@ -5,6 +5,7 @@
 #ifndef GALAXYMAP_H
 #define GALAXYMAP_H
 
+#include <assets/Galaxy.h>
 #include "UIButton.h"
 
 #include <SFML/Graphics/Font.hpp>
@@ -23,7 +24,7 @@
 class GalaxyJumpUI : public sf::Drawable
 {
 public:
-    GalaxyJumpUI();
+    GalaxyJumpUI(Galaxy &galaxy);
 
     void hide();
 
@@ -33,7 +34,7 @@ public:
 
     void setCenter(const sf::Vector2f &center);
 
-    void checkButtonClick(const sf::Vector2f &mouse_pos);
+    void clickButton();
 private:
     bool _is_visible;
     sf::RectangleShape _menu_rec;

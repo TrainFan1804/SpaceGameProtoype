@@ -38,11 +38,29 @@ struct GameScene
     virtual void play() = 0;
 
     /**
-     *  Call this to set up the renderer for the scene.
+     *  Call this to set up the renderer for the scene. Use this ONLY for
+     *  statically loaded assets (Those who only need to be loaded once e.g.
+     *  vehicle, planets, etc.).
      *
      * @param renderer  The renderer that should render the scene.
      */
-    virtual void setupRenderer(Renderer &renderer) = 0;
+    virtual void setupStaticRenderer(Renderer &renderer) = 0;
+
+    /**
+     * Call this to set up the dynamic renderer. This is called everytime
+     * Game::render() is called. You can use this to load assets dynamically
+     * (e.g. menus, dynamically created assets like rockets). Can also be
+     * used to only render what is only visible what is on the screen.
+     *
+     * HINT: Object that are loaded regular but not every frame (e.g. text
+     * about other assets) you should load the asset once in
+     * GameScene::setupStaticRenderer(Renderer) and only activate the loading
+     * of the asset in this method manually instead of removing and adding it
+     * the renderer every time it's loading it in the renderer.
+     *
+     * @param renderer  The renderer that should render the scene.
+     */
+    virtual void setupDynamicRenderer(Renderer &renderer) = 0;
 
     /**
      *  Returns the camera of the scene.

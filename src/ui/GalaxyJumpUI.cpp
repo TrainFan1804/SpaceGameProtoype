@@ -6,9 +6,12 @@
 
 #include <iostream>
 
-GalaxyJumpUI::GalaxyJumpUI()
+GalaxyJumpUI::GalaxyJumpUI(Galaxy &galaxy)
     : _is_visible(false),
-    _button("Jump", _font, [this]() { })
+    _button("Jump", _font, [this, &galaxy]()
+    {
+        galaxy = Galaxy::createGalaxy();
+    })
 {
     _menu_rec.setSize(sf::Vector2f(500, 500));
     _menu_rec.setFillColor(sf::Color::Yellow);
@@ -61,13 +64,9 @@ void GalaxyJumpUI::setCenter(const sf::Vector2f &center)
     _button.setPos(_menu_rec.getPosition());
 }
 
-void GalaxyJumpUI::checkButtonClick(const sf::Vector2f &mouse_pos)
+void GalaxyJumpUI::clickButton()
 {
     if (!_is_visible) return;
     // TODO still very buggy but it's working for now
-    if (_button.getGlobalBounds().contains(mouse_pos))
-    {
-        std::cout << _button.getGlobalBounds().contains(mouse_pos) << std::endl;
-        _button.handleEvent();
-    }
+    _button.handleEvent();
 }

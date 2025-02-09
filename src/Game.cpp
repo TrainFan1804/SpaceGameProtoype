@@ -16,6 +16,9 @@ Game::Game(sf::RenderWindow &window)
 {
     _current_scene = new SpaceScene();
     _window->setView(_current_scene->getCamera());
+    // TODO only setup the renderer once and all dynamically loaded assets
+    // handle in another method.
+    _current_scene->setupStaticRenderer(_renderer);
 }
 
 Game::~Game()
@@ -34,6 +37,7 @@ void Game::setScene(GameScene *scene)
     _current_scene = scene;
 }
 
+// TODO this need to be refactored at all cost...
 void Game::handleEvent()
 {
     sf::Event event;
@@ -53,8 +57,7 @@ void Game::update()
 
 void Game::render()
 {
-    // TODO only setup the renderer once and all dynamically loaded assets
-    // handle in another method.
-    _current_scene->setupRenderer(_renderer);
-    _renderer.render(*_window, *_current_scene);
+    _current_scene->setupDynamicRenderer(_renderer);
+    _renderer.render(*_window);
+    _window->setView(_current_scene->getCamera());
 }

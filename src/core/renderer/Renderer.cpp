@@ -74,13 +74,11 @@ void Renderer::deactivateRenderFor(sf::Drawable *asset)
     }
 }
 
-void Renderer::render(sf::RenderWindow &window, GameScene &render_scene)
+void Renderer::render(sf::RenderWindow &window)
 {
     for (const auto &[prio, asset] : _assets)
     {
         if (asset._is_rendering)
             window.draw(*asset._asset);
     }
-    // The next line is actually pretty bad. TODO This can be fixed later.
-    window.setView(render_scene.getCamera());
 }

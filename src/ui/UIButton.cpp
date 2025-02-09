@@ -10,6 +10,8 @@ UIButton::UIButton(const std::string &label_text, sf::Font &label_font, std::fun
     : _on_click(callback)
 {
     _rect.setFillColor(sf::Color::White);
+    _rect.setOutlineColor(sf::Color::Black);
+    _rect.setOutlineThickness(5);
 
     _text.setFont(label_font);
     _text.setCharacterSize(24);
@@ -35,7 +37,7 @@ sf::FloatRect UIButton::getGlobalBounds() const
 
 void UIButton::handleEvent()
 {
-    std::cout << "Button pressed" << std::endl;
+    _on_click();
 }
 
 void UIButton::draw(sf::RenderTarget &target, sf::RenderStates states) const

@@ -31,12 +31,10 @@ public:
 
     /**
      * Will render all internally saved assets to the given window.
-     * CAUTION: This method will also set the camera every frame to the window!
      *
      * @param window    The window that is rendered to.
-     * @param render_scene  The scene that should be rendered.
      */
-    void render(sf::RenderWindow &window, GameScene &render_scene);
+    void render(sf::RenderWindow &window);
 private:
     int _asset_count;
     std::map<int, RendererEntry> _assets;

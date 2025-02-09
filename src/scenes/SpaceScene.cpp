@@ -31,7 +31,7 @@ constexpr int PLANET_IN_RANGE = 3;
  */
 SpaceScene::SpaceScene()
     : _player_ship(sf::Vector2f(100, 200)),
-      _galaxy("Galaxy 1")
+      _galaxy("Galaxy 1"), _galaxy_jump_ui(_galaxy)
 {
     _camera = new sf::View(sf::FloatRect(0.f, 0.f, Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT));
 
@@ -89,7 +89,6 @@ void SpaceScene::mapHandling(sf::Event &event)
             _galaxy_jump_ui.setCenter(_player_ship.getPos());
             _state_machine.setState(MAP_IS_VISIBLE, true);
             _galaxy_jump_ui.show();
-            _galaxy = Galaxy::createGalaxy();   // TODO should be work with btn press but to lazy rn to implement
         }
         _state_machine.setState(GALAXY_MAP_PRESSED, true);
     }
@@ -97,15 +96,11 @@ void SpaceScene::mapHandling(sf::Event &event)
     {
         _state_machine.setState(GALAXY_MAP_PRESSED, false);
     }
-
-    if (event.type == sf::Event::MouseButtonPressed
-        && event.mouseButton.button == sf::Mouse::Left)
+    if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Enter)
     {
-        sf::Vector2f mouse_vec(event.mouseButton.x, event.mouseButton.y);
-        _galaxy_jump_ui.checkButtonClick(mouse_vec);
+        _galaxy_jump_ui.clickButton();
     }
 }
-
 
 void SpaceScene::play()
 {
@@ -161,11 +156,16 @@ void SpaceScene::play()
  *  the renderer. One for "static" objects like the ship and one for dynamically
  *  created objects like the different planets.
  */
-void SpaceScene::setupRenderer(Renderer &renderer)
+void SpaceScene::setupStaticRenderer(Renderer &renderer)
 {
     renderer.addAsset(&_galaxy);
     renderer.addAsset(&_player_ship);
     renderer.addAsset(&_text);
+    renderer.addAsset(&_galaxy_jump_ui);
+}
+
+void SpaceScene::setupDynamicRenderer(Renderer &renderer)
+{
     /*
      *  Instead of removing and adding the text I should just toggle a
      *  should render bool flag in my custom datastructure to determine if the
@@ -181,7 +181,6 @@ void SpaceScene::setupRenderer(Renderer &renderer)
         // remove text from render pipeline but it's still in render buffer
         renderer.deactivateRenderFor(&_text);
     }
-    renderer.addAsset(&_galaxy_jump_ui);
 }
 
 sf::View &SpaceScene::getCamera() const

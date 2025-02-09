@@ -32,7 +32,9 @@ public:
 
     void play() override;
 
-    void setupRenderer(Renderer &renderer) override;
+    void setupStaticRenderer(Renderer &renderer) override;
+
+    void setupDynamicRenderer(Renderer &renderer) override;
 
     sf::View &getCamera() const override;
 private:

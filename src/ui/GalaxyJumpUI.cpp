@@ -66,5 +66,8 @@ void GalaxyJumpUI::checkButtonClick(const sf::Vector2f &mouse_pos)
     if (!_is_visible) return;
     // TODO still very buggy but it's working for now
     if (_button.getGlobalBounds().contains(mouse_pos))
+    {
+        std::cout << _button.getGlobalBounds().contains(mouse_pos) << std::endl;
         _button.handleEvent();
+    }
 }

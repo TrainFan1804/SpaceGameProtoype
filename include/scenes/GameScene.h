@@ -32,7 +32,8 @@ struct GameScene
     virtual void eventHandling(sf::Event &event) = 0;
 
     /**
-     * Play will start the loop of the scene.
+     * Play will start the loop of the scene. Here should be put all logic that
+     * is connected to any event itself.
      */
     virtual void play() = 0;
 

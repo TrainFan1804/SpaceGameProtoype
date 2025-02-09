@@ -17,18 +17,27 @@
 class Game
 {
 public:
-    Game(Renderer &renderer);
+    Game(sf::RenderWindow &window);
 
     ~Game();
+
+    bool isOpen() const;
 
     void setScene(GameScene *scene);
 
     /**
      * Will handle SFML events. Mostly key inputs.
+     */
+    void handleEvent();
+
+    /**
+     * Will handle events that also need access to the window itself.
+     * Mostly for UI elements.
      *
      * @param event The event to handle.
+     * @param window    The window of the current game.
      */
-    void handleEvent(sf::Event &event);
+    void handleWindowEvent(sf::Event &event, sf::RenderWindow &window);
 
     /**
      * This method will be called to update the state of the current game scene.
@@ -39,13 +48,12 @@ public:
     /**
      *  This method will be called to render the current game scene.
      *  Will be called every frame.
-     *
-     * @param window    The window that is rendered to.
      */
-    void render(sf::RenderWindow &window);
+    void render();
 private:
     GameScene *_current_scene;
     Renderer _renderer;
+    sf::RenderWindow *_window;
 };
 
 #endif //GAME_H

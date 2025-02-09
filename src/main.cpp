@@ -2,10 +2,31 @@
 // Created by o.le on 01.02.25.
 //
 
-#include "Application.h"
+#include <Game.h>
+#include "GameSettings.h"
+#include <scenes/SpaceScene.h>
+
 
 int main()
 {
-    Application app;
-    return app.run();
+    /*
+     *  sf::Style::Titlebar is needed to make the window floating on my system.
+     */
+    sf::RenderWindow window(sf::VideoMode(Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT),
+                            "SFMLGame",
+                            sf::Style::Titlebar);
+    window.setFramerateLimit(60);
+
+    Game game(window);
+
+    while (game.isOpen())
+    {
+        game.handleEvent();
+        game.update();
+
+        window.clear();
+        game.render();
+        window.display();
+    }
+    return 0;
 }

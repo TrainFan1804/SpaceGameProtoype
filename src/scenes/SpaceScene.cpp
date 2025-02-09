@@ -12,15 +12,29 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
+
+/**
+ * This flag will be true if player press button for landing.
+ */
+constexpr int IS_LANDING_PRESSED = 0;
+constexpr int GALAXY_MAP_PRESSED = 1;
+/**
+ * This flag will be true if the galaxy map is visible on the screen.
+ * Important for deactivation mechanism of movement and co. while map is
+ * open.
+ */
+constexpr int MAP_IS_VISIBLE = 2;
+constexpr int PLANET_IN_RANGE = 3;
+
 /*
  *  This is a hell of a constructor...
  */
-SpaceScene::SpaceScene(sf::View &init_camera)
+SpaceScene::SpaceScene()
     : _player_ship(sf::Vector2f(100, 200)),
-      _galaxy("Galaxy 1"),
-      _is_landing_pressed(false), _galaxy_map_pressed(false),
-      _planet_in_range(false), _map_is_visible(false), _camera(init_camera)
+      _galaxy("Galaxy 1")
 {
+    _camera = new sf::View(sf::FloatRect(0.f, 0.f, Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT));
+
     _player_ship.setPos(sf::Vector2f((Settings::WINDOW_WIDTH - 100) / 2, (Settings::WINDOW_HEIGHT - 200) / 2));
     if (!_font.loadFromFile(RESOURCES_PATH "font/OpenSans-Medium.ttf"))
     {
@@ -30,45 +44,58 @@ SpaceScene::SpaceScene(sf::View &init_camera)
     _text.setFont(_font);
     _text.setCharacterSize(20);
     _text.setFillColor(sf::Color::Blue);
+
+    _state_machine.setState(IS_LANDING_PRESSED);
+    _state_machine.setState(GALAXY_MAP_PRESSED);
+    _state_machine.setState(MAP_IS_VISIBLE);
+    _state_machine.setState(PLANET_IN_RANGE);
 }
 
 void SpaceScene::eventHandling(sf::Event &event)
 {
-    if (!_map_is_visible)
+    if (!_state_machine.getState(MAP_IS_VISIBLE))
     {
         _player_ship.controlMoving();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         {
-            if (!_is_landing_pressed)
+            if (!_state_machine.getState(IS_LANDING_PRESSED)
+                && _state_machine.getState(PLANET_IN_RANGE))
             {
                 std::cout << "Starting landing sequence.." << std::endl;
-                _is_landing_pressed = true;
+                _state_machine.setState(IS_LANDING_PRESSED, true);
             }
         }
         else
         {
-            _is_landing_pressed = false;
+            _state_machine.setState(IS_LANDING_PRESSED, false);
         }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && !_galaxy_map_pressed)
+    mapHandling(event);
+}
+
+void SpaceScene::mapHandling(sf::Event &event)
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)
+        && !_state_machine.getState(GALAXY_MAP_PRESSED))
     {
         if (_galaxy_jump_ui.isVisible())
         {
             _galaxy_jump_ui.hide();
-            _map_is_visible = false;
+            _state_machine.setState(MAP_IS_VISIBLE, false);
         }
         else
         {
-            _map_is_visible = true;
+            _galaxy_jump_ui.setCenter(_player_ship.getPos());
+            _state_machine.setState(MAP_IS_VISIBLE, true);
             _galaxy_jump_ui.show();
             _galaxy = Galaxy::createGalaxy();   // TODO should be work with btn press but to lazy rn to implement
         }
-        _galaxy_map_pressed = true;
+        _state_machine.setState(GALAXY_MAP_PRESSED, true);
     }
     if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Q)
     {
-        _galaxy_map_pressed = false;
+        _state_machine.setState(GALAXY_MAP_PRESSED, false);
     }
 
     if (event.type == sf::Event::MouseButtonPressed
@@ -79,11 +106,11 @@ void SpaceScene::eventHandling(sf::Event &event)
     }
 }
 
+
 void SpaceScene::play()
 {
     // make sure the camera is centered to the ship
-    _camera.setCenter(_player_ship.getPos());
-    _galaxy_jump_ui.setCenter(_player_ship.getPos());
+    _camera->setCenter(_player_ship.getPos());
 
     /**
      *  In this big if statement is a very rudimental landing system for
@@ -114,13 +141,13 @@ void SpaceScene::play()
     {
         if (calculateDistanceShipToPlanet(_player_ship, *nearest_planet) <= 500.f)
         {
-            _planet_in_range = true;
+            _state_machine.setState(PLANET_IN_RANGE, true);
             _text.setPosition(nearest_planet->getPos().x, nearest_planet->getPos().y - 100);
         }
     }
     else
     {
-        _planet_in_range = false;
+        _state_machine.setState(PLANET_IN_RANGE, false);
     }
     // end of planet landing calculation stuff
 }
@@ -145,7 +172,7 @@ void SpaceScene::setupRenderer(Renderer &renderer)
      *  text should be drawn or not. Would also be more efficient than removing
      *  and adding the asset everytime the ship is near a planet.
      */
-    if (_planet_in_range)
+    if (_state_machine.getState(PLANET_IN_RANGE))
     {
         renderer.activateRenderFor(&_text);
     }
@@ -159,5 +186,5 @@ void SpaceScene::setupRenderer(Renderer &renderer)
 
 sf::View &SpaceScene::getCamera() const
 {
-    return _camera;
+    return *_camera;
 }

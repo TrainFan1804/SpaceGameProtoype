@@ -23,16 +23,16 @@ add_executable("${CMAKE_PROJECT_NAME}" "${CODE_SOURCES}"
         include/GameSettings.h
         src/core/renderer/RendererEntry.cpp
         include/core/renderer/RendererEntry.h
+        include/scenes/PlanetScene.h
+        src/core/statemachine/StateMachine.cpp
+        include/core/statemachine/StateMachine.h
         #        src/Planet.cpp
 #        include/Planet.h
-#        src/Application.cpp
-#        include/Application.h
 #        include/scenes/GameScene.h
 #        src/scenes/SpaceScene.cpp
 #        include/scenes/SpaceScene.h
 #        src/Renderer.cpp
 #        include/Renderer.h
-#        include/GameObject.h
 )
 
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/")

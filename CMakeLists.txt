@@ -26,6 +26,8 @@ add_executable("${CMAKE_PROJECT_NAME}" "${CODE_SOURCES}"
         include/scenes/PlanetScene.h
         src/core/statemachine/StateMachine.cpp
         include/core/statemachine/StateMachine.h
+        include/assets/PlanetUtils.h
+        src/assets/PlanetUtils.cpp
         #        src/Planet.cpp
 #        include/Planet.h
 #        include/scenes/GameScene.h

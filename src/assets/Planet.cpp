@@ -4,18 +4,20 @@
 
 #include "assets/Planet.h"
 
+#include <SFML/Graphics/RenderTarget.hpp>
+
 Planet::Planet(const Planet &planet)
-    : _planet_name(planet._planet_name), _planet_rec(planet._planet_rec)
+    : _planet_name(planet._planet_name), _planet_rec(planet._planet_rec), _type(planet._type)
 {
 
 }
 
-Planet::Planet(const std::string &planet_name, const sf::Vector2f &size)
-    : _planet_name(planet_name)
+Planet::Planet(const std::string &planet_name, const sf::Vector2f &size, const PlanetUtils::PlanetType &type)
+    : _planet_name(planet_name), _type(type)
 {
     _planet_rec.setSize(size);
     _planet_rec.setOrigin(_planet_rec.getSize().x / 2, _planet_rec.getSize().y / 2);
-    _planet_rec.setFillColor(sf::Color::Green);
+    _planet_rec.setFillColor(PlanetUtils::getPlanetColor(_type));
 }
 
 const sf::Vector2f &Planet::getPos() const

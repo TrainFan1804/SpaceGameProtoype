@@ -18,21 +18,17 @@
  */
 constexpr int IS_LANDING_PRESSED = 0;
 constexpr int GALAXY_MAP_PRESSED = 1;
-/**
- * This flag will be true if the galaxy map is visible on the screen.
- * Important for deactivation mechanism of movement and co. while map is
- * open.
- */
-constexpr int MAP_IS_VISIBLE = 2;
-constexpr int PLANET_IN_RANGE = 3;
+constexpr int PLANET_IN_RANGE = 2;
 
 /*
  *  This is a hell of a constructor...
  */
 SpaceScene::SpaceScene()
-    : _player_ship(sf::Vector2f(100, 200)),
-      _galaxy("Galaxy 1"), _galaxy_jump_ui(_galaxy)
+    : _player_ship(sf::Vector2f(100, 200))
 {
+    _galaxy = Galaxy::createGalaxy();
+    _galaxy_jump_ui = new GalaxyJumpUI(*_galaxy);
+
     _camera = new sf::View(sf::FloatRect(0.f, 0.f, Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT));
 
     _player_ship.setPos(sf::Vector2f((Settings::WINDOW_WIDTH - 100) / 2, (Settings::WINDOW_HEIGHT - 200) / 2));
@@ -47,13 +43,12 @@ SpaceScene::SpaceScene()
 
     _state_machine.setState(IS_LANDING_PRESSED);
     _state_machine.setState(GALAXY_MAP_PRESSED);
-    _state_machine.setState(MAP_IS_VISIBLE);
     _state_machine.setState(PLANET_IN_RANGE);
 }
 
 void SpaceScene::eventHandling(sf::Event &event)
 {
-    if (!_state_machine.getState(MAP_IS_VISIBLE))
+    if (!_galaxy_jump_ui->isVisible())
     {
         _player_ship.controlMoving();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
@@ -79,16 +74,14 @@ void SpaceScene::mapHandling(sf::Event &event)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)
         && !_state_machine.getState(GALAXY_MAP_PRESSED))
     {
-        if (_galaxy_jump_ui.isVisible())
+        if (_galaxy_jump_ui->isVisible())
         {
-            _galaxy_jump_ui.hide();
-            _state_machine.setState(MAP_IS_VISIBLE, false);
+            _galaxy_jump_ui->hide();
         }
         else
         {
-            _galaxy_jump_ui.setCenter(_player_ship.getPos());
-            _state_machine.setState(MAP_IS_VISIBLE, true);
-            _galaxy_jump_ui.show();
+            _galaxy_jump_ui->setCenter(_player_ship.getPos());
+            _galaxy_jump_ui->show();
         }
         _state_machine.setState(GALAXY_MAP_PRESSED, true);
     }
@@ -98,7 +91,7 @@ void SpaceScene::mapHandling(sf::Event &event)
     }
     if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Enter)
     {
-        _galaxy_jump_ui.clickButton();
+        _galaxy_jump_ui->clickButton();
     }
 }
 
@@ -122,7 +115,7 @@ void SpaceScene::play()
     std::unique_ptr<Planet> nearest_planet = nullptr; // TODO I could put this into the PlayerShip class
     nearest_planet.reset(); // make sure the unique_pointer hold nothing.
     float nearest_planet_distance = 100.f;
-    for (auto &planet: _galaxy.getGalaxyPlanets())
+    for (auto &planet: _galaxy->getGalaxyPlanets())
     {
         float distance = calculateDistanceShipToPlanet(_player_ship, planet);
         if (distance < nearest_planet_distance)
@@ -158,10 +151,10 @@ void SpaceScene::play()
  */
 void SpaceScene::setupStaticRenderer(Renderer &renderer)
 {
-    renderer.addAsset(&_galaxy);
+    renderer.addAsset(_galaxy);
     renderer.addAsset(&_player_ship);
     renderer.addAsset(&_text);
-    renderer.addAsset(&_galaxy_jump_ui);
+    renderer.addAsset(_galaxy_jump_ui);
 }
 
 void SpaceScene::setupDynamicRenderer(Renderer &renderer)

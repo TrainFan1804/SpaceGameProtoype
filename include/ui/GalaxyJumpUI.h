@@ -13,6 +13,8 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+class Galaxy;
+
 /**
  * This is the UI Element for the "jump between galaxies" menu.
  * Important note: The scene will check on his own if he should be drawn or handle

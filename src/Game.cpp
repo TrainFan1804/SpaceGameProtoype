@@ -6,8 +6,6 @@
 
 #include <scenes/SpaceScene.h>
 
-#include "GameSettings.h"
-
 /*
  *  These pointers are very ...
  */

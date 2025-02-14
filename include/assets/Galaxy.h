@@ -5,6 +5,8 @@
 #ifndef GALAXY_H
 #define GALAXY_H
 
+#include <scenes/SpaceScene.h>
+
 #include "Planet.h"
 
 #include "vector"
@@ -25,7 +27,7 @@ public:
      *
      * @return  The created galaxy.
      */
-    static Galaxy createGalaxy();
+    static Galaxy *createGalaxy();
 
     Galaxy(const std::string &galaxy_name);
 
@@ -38,10 +40,11 @@ public:
      */
     Galaxy(const std::string &galaxy_name, int planet_amount);
     ~Galaxy() = default;
+    Galaxy &operator=(Galaxy *galaxy);
 
     const std::string &getGalaxyName();
-
     std::vector<Planet> &getGalaxyPlanets();
+
 private:
     std::string _galaxy_name;
     std::vector<Planet> _planets;

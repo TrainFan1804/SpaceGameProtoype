@@ -9,7 +9,8 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+
+#include "PlanetUtils.h"
 
 /**
  *  This class represent a planet in the game.
@@ -20,10 +21,11 @@ public:
     Planet() = default;
     ~Planet() = default;
     Planet(const Planet& other);
-    Planet(const std::string &planet_name, const sf::Vector2f &size);
+    Planet(const std::string &planet_name, const sf::Vector2f &size, const PlanetUtils::PlanetType &type);
     const sf::Vector2f &getPos() const;
     void setPos(const sf::Vector2f &pos);
 private:
+    PlanetUtils::PlanetType _type;
     std::string _planet_name;
     mutable sf::RectangleShape _planet_rec;
 

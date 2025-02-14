@@ -10,12 +10,13 @@
 #include "assets/Galaxy.h"
 #include "assets/PlayerShip.h"
 #include "ui/GalaxyJumpUI.h"
+#include "core/statemachine/StateMachine.h"
 
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>
 
-#include "core/statemachine/StateMachine.h"
-
+class Galaxy;
+class GalaxyJumpUI;
 
 /**
  * The SpaceScene could be called the "default" scene because that is the scene
@@ -40,8 +41,8 @@ public:
 private:
     sf::View *_camera;  // I should remove the reference and create it in the scene directly
     PlayerShip _player_ship;
-    Galaxy _galaxy;
-    GalaxyJumpUI _galaxy_jump_ui;
+    Galaxy *_galaxy;
+    GalaxyJumpUI *_galaxy_jump_ui;
     StateMachine _state_machine;
     sf::Font _font;
     sf::Text _text;

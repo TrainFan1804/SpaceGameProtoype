@@ -11,6 +11,7 @@ GalaxyJumpUI::GalaxyJumpUI(Galaxy &galaxy)
     _button("Jump", _font, [this, &galaxy]()
     {
         galaxy = Galaxy::createGalaxy();
+        _is_visible = false;
     })
 {
     _menu_rec.setSize(sf::Vector2f(500, 500));
@@ -67,6 +68,5 @@ void GalaxyJumpUI::setCenter(const sf::Vector2f &center)
 void GalaxyJumpUI::clickButton()
 {
     if (!_is_visible) return;
-    // TODO still very buggy but it's working for now
     _button.handleEvent();
 }

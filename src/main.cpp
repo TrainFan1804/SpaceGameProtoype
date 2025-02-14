@@ -16,6 +16,7 @@ int main()
                             "SFMLGame",
                             sf::Style::Titlebar);
     window.setFramerateLimit(60);
+    window.setKeyRepeatEnabled(false);
 
     Game game(window);
 

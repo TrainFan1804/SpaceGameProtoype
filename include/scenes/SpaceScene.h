@@ -29,7 +29,9 @@ class SpaceScene : public GameScene
 public:
     SpaceScene();
 
-    void eventHandling(sf::Event &event) override;
+    void singleEventHandling(sf::Event &event) override;
+
+    void complexEventHandling(sf::Event &event) override;
 
     void play() override;
 

@@ -4,6 +4,7 @@
 
 #include "Game.h"
 
+#include <iostream>
 #include <scenes/SpaceScene.h>
 
 /*
@@ -35,7 +36,6 @@ void Game::setScene(GameScene *scene)
     _current_scene = scene;
 }
 
-// TODO this need to be refactored at all cost...
 void Game::handleEvent()
 {
     sf::Event event;
@@ -44,8 +44,10 @@ void Game::handleEvent()
         // TODO Add events for resize, etc.
         if (event.type == sf::Event::Closed)
             _window->close();
+        // technically this should just handle stuff that require multiple keystrokes (e.g. movement)
+        _current_scene->singleEventHandling(event);
     }
-    _current_scene->eventHandling(event);
+    _current_scene->complexEventHandling(event);
 }
 
 void Game::update()

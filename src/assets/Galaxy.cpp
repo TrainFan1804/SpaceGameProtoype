@@ -4,9 +4,6 @@
 
 #include "assets/Galaxy.h"
 
-#include <iostream>
-#include <ostream>
-
 #include "assets/Planet.h"
 #include "utils/RandomUtils.h"
 
@@ -17,7 +14,6 @@ Galaxy *Galaxy::createGalaxy()
     // this is ugly but it works
     static int galaxy_count = 1;
     unsigned int random_seed = RandomUtils::randomSeed();
-    std::cout << random_seed << std::endl;
     RandomUtils::setSeed(random_seed);
     int planet_amount = RandomUtils::randomInt(1, 10);
     return new Galaxy("Galaxy" + ++galaxy_count, planet_amount);

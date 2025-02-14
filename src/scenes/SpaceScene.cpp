@@ -42,37 +42,31 @@ SpaceScene::SpaceScene()
     _text.setFillColor(sf::Color::Blue);
 
     _state_machine.setState(IS_LANDING_PRESSED);
-    _state_machine.setState(GALAXY_MAP_PRESSED);
     _state_machine.setState(PLANET_IN_RANGE);
 }
 
-void SpaceScene::eventHandling(sf::Event &event)
+void SpaceScene::singleEventHandling(sf::Event &event)
 {
     if (!_galaxy_jump_ui->isVisible())
     {
-        _player_ship.controlMoving();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        if (event.type == sf::Event::KeyPressed
+            && event.key.code == sf::Keyboard::E)
         {
-            if (!_state_machine.getState(IS_LANDING_PRESSED)
-                && _state_machine.getState(PLANET_IN_RANGE))
-            {
+            /*
+             * TODO instead of check if a planet is in range I should just calculate
+             * the range of the planet when the key was even pressed
+             */
+            if (_state_machine.getState(PLANET_IN_RANGE))
                 std::cout << "Starting landing sequence.." << std::endl;
-                _state_machine.setState(IS_LANDING_PRESSED, true);
-            }
-        }
-        else
-        {
-            _state_machine.setState(IS_LANDING_PRESSED, false);
         }
     }
-
     mapHandling(event);
 }
 
 void SpaceScene::mapHandling(sf::Event &event)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)
-        && !_state_machine.getState(GALAXY_MAP_PRESSED))
+    if (event.type == sf::Event::KeyPressed
+        && event.key.code == sf::Keyboard::Q)
     {
         if (_galaxy_jump_ui->isVisible())
         {
@@ -83,16 +77,18 @@ void SpaceScene::mapHandling(sf::Event &event)
             _galaxy_jump_ui->setCenter(_player_ship.getPos());
             _galaxy_jump_ui->show();
         }
-        _state_machine.setState(GALAXY_MAP_PRESSED, true);
     }
-    if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Q)
-    {
-        _state_machine.setState(GALAXY_MAP_PRESSED, false);
-    }
-    if (event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Enter)
+    if (event.type == sf::Event::KeyPressed
+        && event.key.code == sf::Keyboard::Enter)
     {
         _galaxy_jump_ui->clickButton();
     }
+}
+
+void SpaceScene::complexEventHandling(sf::Event &event)
+{
+    if (!_galaxy_jump_ui->isVisible())
+        _player_ship.controlMoving();
 }
 
 void SpaceScene::play()

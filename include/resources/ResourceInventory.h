@@ -5,6 +5,9 @@
 #ifndef RESOURCEHOLDER_H
 #define RESOURCEHOLDER_H
 
+#include <unordered_map>
+
+#include "ResourceType.h"
 #include "assets/PlanetUtils.h"
 #include "ui/ResourceOverlay.h"
 
@@ -21,17 +24,16 @@ class ResourceOverlay;
 class ResourceInventory
 {
 public:
-    const unsigned int &metal_amount;
-    const unsigned int &water_amount;
-
-    ResourceInventory();
+    int getResourceAmount(const Resource::ResourceType &res);
 
     /**
      * Adding resources to the inventory based on the planet type that is injected.
      *
      * @param type  The type of the planet that is farmed.
      */
-    void addResource(const PlanetUtils::PlanetType &type);
+    void addResource(const Resource::ResourceType &res, int amount);
+
+    bool removeResource(const Resource::ResourceType &res, int amount);
 
     /**
      * This will set the overlay that is observing the inventory. Can set on
@@ -42,8 +44,7 @@ public:
      */
     void setOverlay(ResourceOverlay *overlay);
 private:
-    unsigned int _metal_amount;
-    unsigned int _water_amount;
+    std::unordered_map<Resource::ResourceType, int> _resources;
 
     ResourceOverlay *_overlay;
 };

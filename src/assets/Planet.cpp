@@ -6,18 +6,23 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
-Planet::Planet(const Planet &planet)
-    : _planet_name(planet._planet_name), _planet_rec(planet._planet_rec), _type(planet._type)
+Planet::Planet(const Planet &other)
+    : _planet_name(other._planet_name), _planet_rec(other._planet_rec)
+    , _planet_deposit(other._planet_deposit)
 {
 
 }
 
-Planet::Planet(const std::string &planet_name, const sf::Vector2f &size, const PlanetUtils::PlanetType &type)
-    : _planet_name(planet_name), _type(type)
+Planet::Planet(const std::string &planet_name, const sf::Vector2f &size,
+    const PlanetUtils::PlanetType &type)
+    : _planet_name(planet_name)
 {
     _planet_rec.setSize(size);
     _planet_rec.setOrigin(_planet_rec.getSize().x / 2, _planet_rec.getSize().y / 2);
-    _planet_rec.setFillColor(PlanetUtils::getPlanetColor(_type));
+    _planet_rec.setFillColor(PlanetUtils::getPlanetColor(type));
+    // TODO why is the next line executed multiple times? Probably is something
+    // wrong with the copy or move constructor...
+    _planet_deposit.addResource(Resource::ResourceType::METAL, 10);
 }
 
 const sf::Vector2f &Planet::getPos() const
@@ -30,14 +35,14 @@ void Planet::setPos(const sf::Vector2f &pos)
     _planet_rec.setPosition(pos);
 }
 
-PlanetUtils::PlanetType Planet::getType() const
+int Planet::harvestResource(const Resource::ResourceType &type)
 {
-    return _type;
-}
-
-sf::FloatRect Planet::getGlobalBounds() const
-{
-    return _planet_rec.getGlobalBounds();
+    int temp = _planet_deposit.getResourceAmount(type);
+    if (_planet_deposit.removeResource(type, temp))
+    {
+        return temp;
+    }
+    return 0;
 }
 
 void Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const

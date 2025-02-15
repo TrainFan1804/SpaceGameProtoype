@@ -4,23 +4,26 @@
 
 #include "resources/ResourceInventory.h"
 
-ResourceInventory::ResourceInventory()
-    : _metal_amount(0), metal_amount(_metal_amount),
-    _water_amount(0), water_amount(_water_amount)
+int ResourceInventory::getResourceAmount(const Resource::ResourceType &res)
 {
-
+    return _resources[res];
 }
 
-void ResourceInventory::addResource(const PlanetUtils::PlanetType &type)
+void ResourceInventory::addResource(const Resource::ResourceType &res, int amount)
 {
-    switch (type)
+    _resources[res] += amount;
+    if (_overlay)
+        _overlay->setData(this);
+}
+
+bool ResourceInventory::removeResource(const Resource::ResourceType &res, int amount)
+{
+    if (amount >= _resources[res])
     {
-        case PlanetUtils::EARTH_LIKE: _metal_amount += 20; break;
-        case PlanetUtils::TOXIC:  _metal_amount += 10; break;
-        case PlanetUtils::HOT: _metal_amount += 30; break;
-        case PlanetUtils::ICE: _metal_amount += 50; break;
+        _resources[res] -= amount;
+        return true;
     }
-    _overlay->setData(this);
+    return false;
 }
 
 void ResourceInventory::setOverlay(ResourceOverlay *overlay)

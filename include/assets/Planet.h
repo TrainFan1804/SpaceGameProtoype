@@ -6,6 +6,7 @@
 #define PLANET_H
 
 #include "PlanetUtils.h"
+#include "resources/ResourceInventory.h"
 
 #include <string>
 
@@ -20,15 +21,15 @@ class Planet : public sf::Drawable
 public:
     Planet() = default;
     ~Planet() = default;
-    Planet(const Planet& other);
-    Planet(const std::string &planet_name, const sf::Vector2f &size, const PlanetUtils::PlanetType &type);
+    Planet(const Planet &other);
+    Planet(const std::string &planet_name, const sf::Vector2f &size,
+        const PlanetUtils::PlanetType &type);
     const sf::Vector2f &getPos() const;
     void setPos(const sf::Vector2f &pos);
-    PlanetUtils::PlanetType getType() const;
-    sf::FloatRect getGlobalBounds() const;
+    int harvestResource(const Resource::ResourceType &type);
 private:
-    PlanetUtils::PlanetType _type;
     std::string _planet_name;
+    ResourceInventory _planet_deposit;
     mutable sf::RectangleShape _planet_rec;
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;

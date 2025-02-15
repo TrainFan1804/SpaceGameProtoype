@@ -34,11 +34,12 @@ public:
      * This isn't exactly what encapsulation stand for bit I don't really care.
      * Just RTFM.
      */
-    void setData(const ResourceInventory *inv);
+    void setData(ResourceInventory *inv);
 private:
     sf::RectangleShape _rec;
     sf::Text _metal_text;
     sf::Text _water_text;
+    sf::Text _organic_text;
     sf::Font _font;
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;

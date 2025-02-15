@@ -91,7 +91,7 @@ void SpaceScene::play()
 {
     // make sure the camera is centered to the ship
     _camera->setCenter(_player_ship.getPos());
-    _resource_overlay->setPos(sf::Vector2f(_camera->getCenter().x + 300,
+    _resource_overlay->setPos(sf::Vector2f(_camera->getCenter().x + 600,
         _camera->getCenter().y - 300));
 
     /*
@@ -140,8 +140,13 @@ void SpaceScene::play()
     {
         if (_state_machine.getState(IS_LANDING_PRESSED))
         {
-            _resource_inventory.addResource(nearest_planet.get()->getType());
-            // _resource_overlay->setData(_resource_inventory);
+            // get random resource from nearest planet
+            int from_planet = nearest_planet
+                ->harvestResource(Resource::ResourceType::METAL);
+            // adding these resource to the players inventory
+            _resource_inventory.addResource(Resource::ResourceType::METAL,
+                from_planet);
+
             _state_machine.setState(IS_LANDING_PRESSED, false);
         }
     }

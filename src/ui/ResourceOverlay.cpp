@@ -24,22 +24,29 @@ ResourceOverlay::ResourceOverlay()
     _water_text.setFont(_font);
     _water_text.setCharacterSize(20);
     _water_text.setFillColor(sf::Color::Black);
+
+    _organic_text.setString("Organic: 0");
+    _organic_text.setFont(_font);
+    _organic_text.setCharacterSize(20);
+    _organic_text.setFillColor(sf::Color::Black);
 }
 
-// TODO it's a bit buggy
+// TODO this need to be done better
 void ResourceOverlay::setPos(const sf::Vector2f &pos)
 {
     sf::Vector2f new_pos(pos.x - _rec.getSize().x,
         pos.y - _rec.getSize().y);
     _rec.setPosition(new_pos);
     _metal_text.setPosition(_rec.getPosition().x, _rec.getPosition().y);
-    _water_text.setPosition(_rec.getPosition().x, _rec.getPosition().y + 50);
+    _water_text.setPosition(_rec.getPosition().x, _rec.getPosition().y + 30);
+    _organic_text.setPosition(_rec.getPosition().x, _rec.getPosition().y + 60);
 }
 
-void ResourceOverlay::setData(const ResourceInventory *inv)
+void ResourceOverlay::setData(ResourceInventory *inv)
 {
-    _metal_text.setString("Metal: " + std::to_string(inv->metal_amount));
-    _water_text.setString("Water: " + std::to_string(inv->water_amount));
+    _metal_text.setString("Metal: " + std::to_string(inv->getResourceAmount(Resource::ResourceType::METAL)));
+    // _water_text.setString("Water: " + std::to_string(inv->water_amount));
+    // _organic_text.setString("Organic: " + std::to_string(inv->organic_amount));
 }
 
 void ResourceOverlay::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -47,4 +54,5 @@ void ResourceOverlay::draw(sf::RenderTarget &target, sf::RenderStates states) co
     target.draw(_rec);
     target.draw(_metal_text);
     target.draw(_water_text);
+    target.draw(_organic_text);
 }

@@ -34,6 +34,8 @@ add_executable("${CMAKE_PROJECT_NAME}" "${CODE_SOURCES}"
         include/utils/AssetUtils.h
         src/ui/ResourceOverlay.cpp
         include/ui/ResourceOverlay.h
+        include/resources/ResourceType.h
+        src/resources/ResourceType.cpp
         #        src/Planet.cpp
 #        include/Planet.h
 #        include/scenes/GameScene.h

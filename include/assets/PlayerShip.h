@@ -9,8 +9,6 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Vector2.hpp>
 
-class Planet;
-
 /**
  *  This class represent the players ship in the game.
  */
@@ -37,15 +35,5 @@ private:
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
-
-/**
- * This need to be optimized expecially when working with multiple planets in
- * the galaxy.
- *
- * @param player    The player ship that want to land.
- * @param target_planet The target planet that can be landed on.
- * @return  The real distance between the ship and a planet
- */
-float calculateDistanceShipToPlanet(const PlayerShip &player, const Planet &target_planet);
 
 #endif //PLAYERSHIP_H

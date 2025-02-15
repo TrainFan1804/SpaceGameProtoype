@@ -3,7 +3,6 @@
 //
 
 #include "assets/PlayerShip.h"
-#include "assets/Planet.h"
 
 #include <cmath>
 
@@ -77,17 +76,4 @@ void PlayerShip::controlMoving()
 void PlayerShip::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     target.draw(_ship_rec);
-}
-
-float calculateDistanceShipToPlanet(const PlayerShip &player, const Planet &target_planet)
-{
-    sf::Vector2f center_pos_player(player.getPos().x / 2, player.getPos().y / 2);
-    sf::Vector2f center_pos_target_planet(target_planet.getPos().x / 2, target_planet.getPos().y / 2);
-
-    float distance_x = center_pos_player.x - center_pos_target_planet.x;
-    float distance_y = center_pos_player.y - center_pos_target_planet.y;
-
-    float real_distance = std::sqrt(distance_x * distance_x + distance_y * distance_y);
-
-    return real_distance;
 }

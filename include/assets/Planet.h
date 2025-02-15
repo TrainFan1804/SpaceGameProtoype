@@ -5,12 +5,12 @@
 #ifndef PLANET_H
 #define PLANET_H
 
+#include "PlanetUtils.h"
+
 #include <string>
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
-
-#include "PlanetUtils.h"
 
 /**
  *  This class represent a planet in the game.
@@ -24,6 +24,8 @@ public:
     Planet(const std::string &planet_name, const sf::Vector2f &size, const PlanetUtils::PlanetType &type);
     const sf::Vector2f &getPos() const;
     void setPos(const sf::Vector2f &pos);
+    PlanetUtils::PlanetType getType() const;
+    sf::FloatRect getGlobalBounds() const;
 private:
     PlanetUtils::PlanetType _type;
     std::string _planet_name;

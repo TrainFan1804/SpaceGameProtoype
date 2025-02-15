@@ -15,8 +15,6 @@ Game::Game(sf::RenderWindow &window)
 {
     _current_scene = new SpaceScene();
     _window->setView(_current_scene->getCamera());
-    // TODO only setup the renderer once and all dynamically loaded assets
-    // handle in another method.
     _current_scene->setupStaticRenderer(_renderer);
 }
 

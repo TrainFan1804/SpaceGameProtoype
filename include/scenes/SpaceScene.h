@@ -15,6 +15,8 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>
 
+#include "resources/ResourceInventory.h"
+
 class Galaxy;
 class GalaxyJumpUI;
 
@@ -48,6 +50,8 @@ private:
     StateMachine _state_machine;
     sf::Font _font;
     sf::Text _text;
+
+    ResourceInventory _resource_inventory;
 
     void mapHandling(sf::Event &event);
 };

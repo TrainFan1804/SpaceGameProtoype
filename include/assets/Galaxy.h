@@ -53,8 +53,6 @@ private:
      *  Will generate n random generated planets.
      *
      * @param max_amount    The amount of planets that should be generated.
-     *
-     *  TODO Need to be optimized (like no overlapping, etc.) but rn it's fine.
      */
     void generatePlanets(int max_amount);
 

@@ -30,6 +30,16 @@ void Planet::setPos(const sf::Vector2f &pos)
     _planet_rec.setPosition(pos);
 }
 
+PlanetUtils::PlanetType Planet::getType() const
+{
+    return _type;
+}
+
+sf::FloatRect Planet::getGlobalBounds() const
+{
+    return _planet_rec.getGlobalBounds();
+}
+
 void Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     _planet_rec.rotate(0.2f);

@@ -12,13 +12,13 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
+#include "utils/AssetUtils.h"
 
 /**
  * This flag will be true if player press button for landing.
  */
 constexpr int IS_LANDING_PRESSED = 0;
-constexpr int GALAXY_MAP_PRESSED = 1;
-constexpr int PLANET_IN_RANGE = 2;
+constexpr int PLANET_IN_RANGE = 1;
 
 /*
  *  This is a hell of a constructor...
@@ -52,12 +52,7 @@ void SpaceScene::singleEventHandling(sf::Event &event)
         if (event.type == sf::Event::KeyPressed
             && event.key.code == sf::Keyboard::E)
         {
-            /*
-             * TODO instead of check if a planet is in range I should just calculate
-             * the range of the planet when the key was even pressed
-             */
-            if (_state_machine.getState(PLANET_IN_RANGE))
-                std::cout << "Starting landing sequence.." << std::endl;
+            _state_machine.setState(IS_LANDING_PRESSED, true);
         }
     }
     mapHandling(event);
@@ -96,14 +91,14 @@ void SpaceScene::play()
     // make sure the camera is centered to the ship
     _camera->setCenter(_player_ship.getPos());
 
-    /**
+    /*
      *  In this big if statement is a very rudimental landing system for
-     *  planets. This need definetly to be updated.
+     *  planets. This need definitely to be updated.
      *
      *  This doesn't work anymore when working with multiple planets per
      *  galaxy.
      *
-     *  I could finaly let it work correctly. To interact with a planet the\
+     *  I could finally let it work correctly. To interact with a planet the
      *  ship must be in a range from 0 to 100 units away from the targeting
      *  planet.
      *  TODO I need a find abstraction for this one.
@@ -113,7 +108,7 @@ void SpaceScene::play()
     float nearest_planet_distance = 100.f;
     for (auto &planet: _galaxy->getGalaxyPlanets())
     {
-        float distance = calculateDistanceShipToPlanet(_player_ship, planet);
+        float distance = AssetUtils::calcDistanceBetweenAssets(_player_ship, planet);
         if (distance < nearest_planet_distance)
         {
             nearest_planet = std::make_unique<Planet>(planet);
@@ -123,7 +118,7 @@ void SpaceScene::play()
 
     if (nearest_planet)
     {
-        if (calculateDistanceShipToPlanet(_player_ship, *nearest_planet) <= 500.f)
+        if (AssetUtils::calcDistanceBetweenAssets(_player_ship, *nearest_planet) <= 500.f)
         {
             _state_machine.setState(PLANET_IN_RANGE, true);
             _text.setPosition(nearest_planet->getPos().x, nearest_planet->getPos().y - 100);
@@ -134,17 +129,20 @@ void SpaceScene::play()
         _state_machine.setState(PLANET_IN_RANGE, false);
     }
     // end of planet landing calculation stuff
+
+    // this is ugly but it works.
+    // TODO maybe adding a timer before adding the resources to the inventory?
+    if (nearest_planet && _state_machine.getState(PLANET_IN_RANGE))
+    {
+        if (_state_machine.getState(IS_LANDING_PRESSED))
+        {
+            _resource_inventory.addResource(nearest_planet.get()->getType());
+            std::cout << _resource_inventory.metal_amount << std::endl;
+            _state_machine.setState(IS_LANDING_PRESSED, false);
+        }
+    }
 }
 
-/*
- *  This method is still not very good. This method will always be called when
- *  drawing something to the screen but this method should just load the stuff
- *  into the renderer. But some object will always be on the same address in memory
- *  (e.g. the ship, the text (just there position etc. will change, but it's
- *  still the same object)). So I need actually two? methods to load something into
- *  the renderer. One for "static" objects like the ship and one for dynamically
- *  created objects like the different planets.
- */
 void SpaceScene::setupStaticRenderer(Renderer &renderer)
 {
     renderer.addAsset(_galaxy);
@@ -161,7 +159,8 @@ void SpaceScene::setupDynamicRenderer(Renderer &renderer)
      *  text should be drawn or not. Would also be more efficient than removing
      *  and adding the asset everytime the ship is near a planet.
      */
-    if (_state_machine.getState(PLANET_IN_RANGE))
+    if (_state_machine.getState(PLANET_IN_RANGE)
+        && !_galaxy_jump_ui->isVisible())
     {
         renderer.activateRenderFor(&_text);
     }

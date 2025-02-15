@@ -20,5 +20,11 @@ void ResourceInventory::addResource(const PlanetUtils::PlanetType &type)
         case PlanetUtils::HOT: _metal_amount += 30; break;
         case PlanetUtils::ICE: _metal_amount += 50; break;
     }
+    _overlay->setData(this);
+}
+
+void ResourceInventory::setOverlay(ResourceOverlay *overlay)
+{
+    _overlay = overlay;
 }
 

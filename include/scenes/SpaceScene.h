@@ -15,6 +15,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>
 
+#include "../ui/ResourceOverlay.h"
 #include "resources/ResourceInventory.h"
 
 class Galaxy;
@@ -52,6 +53,7 @@ private:
     sf::Text _text;
 
     ResourceInventory _resource_inventory;
+    ResourceOverlay *_resource_overlay;
 
     void mapHandling(sf::Event &event);
 };

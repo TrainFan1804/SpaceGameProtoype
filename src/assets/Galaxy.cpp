@@ -8,6 +8,7 @@
 #include "utils/RandomUtils.h"
 
 #include "random"
+#include "utils/AssetUtils.h"
 
 Galaxy *Galaxy::createGalaxy()
 {
@@ -39,7 +40,6 @@ Galaxy &Galaxy::operator=(Galaxy *galaxy)
     return *this;
 }
 
-
 std::vector<Planet> &Galaxy::getGalaxyPlanets()
 {
     return _planets;
@@ -54,7 +54,7 @@ void Galaxy::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     for (auto &planet: _planets)
     {
-        target.draw(planet); // this will probably make alot of weird things...
+        target.draw(planet); // this will probably make a lot of weird things...
     }
 }
 
@@ -64,23 +64,26 @@ void Galaxy::generatePlanets(int max_size)
     {
         Planet new_planet("Planet " + i, sf::Vector2f(100, 100), RandomUtils::randomPlanetType());
         // this got ugly very fast
-        // TODO also doesn't work perfect yet but better than before
         bool is_valid = false;
         while (!is_valid)
         {
-            float pos_x = RandomUtils::randomFloat(0, 500);
-            float pos_y = RandomUtils::randomFloat(0, 500);
+            float pos_x = RandomUtils::randomFloat(0, 1000);
+            float pos_y = RandomUtils::randomFloat(0, 1000);
             new_planet.setPos(sf::Vector2f(pos_x, pos_y));
-            is_valid = true;
-            for (auto planet : _planets)
-            {
-                if (planet.getGlobalBounds()
-                    .intersects(new_planet.getGlobalBounds()))
-                {
-                    is_valid = false;
-                }
-            }
+            is_valid = isValidPos(new_planet);
         }
         _planets.push_back(new_planet);
     }
+}
+
+bool Galaxy::isValidPos(Planet &new_planet) const
+{
+    for (auto planet : _planets)
+    {
+        if (AssetUtils::calcDistanceBetweenAssets(new_planet, planet) <= 100)
+        {
+            return false;
+        }
+    }
+    return true;
 }

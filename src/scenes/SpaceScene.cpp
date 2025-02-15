@@ -5,14 +5,12 @@
 #include "scenes/SpaceScene.h"
 #include "ui/GalaxyJumpUI.h"
 #include "GameSettings.h"
+#include "utils/AssetUtils.h"
 
-#include <iostream>
 #include <memory>
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
-
-#include "utils/AssetUtils.h"
 
 /**
  * This flag will be true if player press button for landing.
@@ -43,6 +41,9 @@ SpaceScene::SpaceScene()
 
     _state_machine.setState(IS_LANDING_PRESSED);
     _state_machine.setState(PLANET_IN_RANGE);
+
+    _resource_overlay = new ResourceOverlay();
+    _resource_inventory.setOverlay(_resource_overlay);
 }
 
 void SpaceScene::singleEventHandling(sf::Event &event)
@@ -90,6 +91,8 @@ void SpaceScene::play()
 {
     // make sure the camera is centered to the ship
     _camera->setCenter(_player_ship.getPos());
+    _resource_overlay->setPos(sf::Vector2f(_camera->getCenter().x + 300,
+        _camera->getCenter().y - 300));
 
     /*
      *  In this big if statement is a very rudimental landing system for
@@ -121,7 +124,8 @@ void SpaceScene::play()
         if (AssetUtils::calcDistanceBetweenAssets(_player_ship, *nearest_planet) <= 500.f)
         {
             _state_machine.setState(PLANET_IN_RANGE, true);
-            _text.setPosition(nearest_planet->getPos().x, nearest_planet->getPos().y - 100);
+            _text.setPosition(nearest_planet->getPos().x,
+                nearest_planet->getPos().y - 100);
         }
     }
     else
@@ -137,7 +141,7 @@ void SpaceScene::play()
         if (_state_machine.getState(IS_LANDING_PRESSED))
         {
             _resource_inventory.addResource(nearest_planet.get()->getType());
-            std::cout << _resource_inventory.metal_amount << std::endl;
+            // _resource_overlay->setData(_resource_inventory);
             _state_machine.setState(IS_LANDING_PRESSED, false);
         }
     }
@@ -149,6 +153,7 @@ void SpaceScene::setupStaticRenderer(Renderer &renderer)
     renderer.addAsset(&_player_ship);
     renderer.addAsset(&_text);
     renderer.addAsset(_galaxy_jump_ui);
+    renderer.addAsset(_resource_overlay);
 }
 
 void SpaceScene::setupDynamicRenderer(Renderer &renderer)

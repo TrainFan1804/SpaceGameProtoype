@@ -5,8 +5,6 @@
 #ifndef GALAXY_H
 #define GALAXY_H
 
-#include <scenes/SpaceScene.h>
-
 #include "Planet.h"
 
 #include "vector"
@@ -55,6 +53,8 @@ private:
      * @param max_amount    The amount of planets that should be generated.
      */
     void generatePlanets(int max_amount);
+
+    bool isValidPos(Planet &new_planet) const;
 
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };

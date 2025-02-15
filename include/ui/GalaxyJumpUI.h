@@ -40,7 +40,7 @@ public:
 private:
     bool _is_visible;
     sf::RectangleShape _menu_rec;
-    sf::Font _font;
+    sf::Font _font; // TODO remove font?
     sf::Text _text;
     UIButton _button;
 

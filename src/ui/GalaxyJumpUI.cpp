@@ -59,7 +59,8 @@ bool GalaxyJumpUI::isVisible() const
 
 void GalaxyJumpUI::setCenter(const sf::Vector2f &center)
 {
-    sf::Vector2f new_pos(center.x - _menu_rec.getSize().x / 2, center.y - _menu_rec.getSize().y / 2);
+    sf::Vector2f new_pos(center.x - _menu_rec.getSize().x / 2,
+        center.y - _menu_rec.getSize().y / 2);
     _menu_rec.setPosition(new_pos);
     _text.setPosition(_menu_rec.getPosition());
     _button.setPos(_menu_rec.getPosition());

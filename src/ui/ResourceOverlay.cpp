@@ -44,7 +44,7 @@ void ResourceOverlay::setPos(const sf::Vector2f &pos)
 
 void ResourceOverlay::setData(ResourceInventory *inv)
 {
-    _metal_text.setString("Metal: " + std::to_string(inv->getResourceAmount(Resource::ResourceType::METAL)));
+    _metal_text.setString("Metal: " + std::to_string(inv->getResourceAmount(res::ResourceType::METAL)));
     // _water_text.setString("Water: " + std::to_string(inv->water_amount));
     // _organic_text.setString("Organic: " + std::to_string(inv->organic_amount));
 }

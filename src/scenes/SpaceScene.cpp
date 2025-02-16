@@ -7,8 +7,6 @@
 #include "GameSettings.h"
 #include "utils/AssetUtils.h"
 
-#include <memory>
-
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
@@ -94,6 +92,31 @@ void SpaceScene::play()
     _resource_overlay->setPos(sf::Vector2f(_camera->getCenter().x + 600,
         _camera->getCenter().y - 300));
 
+    auto nearest_planet = calcNearestPlanet();
+
+    setPlanetLandingText(nearest_planet);
+
+    // this is ugly but it works.
+    // TODO maybe adding a timer before adding the resources to the inventory?
+    if (nearest_planet && _state_machine.getState(PLANET_IN_RANGE))
+    {
+        if (_state_machine.getState(IS_LANDING_PRESSED))
+        {
+            // TODO now I can add the mechanic for random resource farming and amount of it
+            // get random resource from nearest planet
+            int from_planet = nearest_planet
+                ->harvestResource(res::ResourceType::METAL);
+            // adding these resource to the players inventory
+            _resource_inventory.addResource(res::ResourceType::METAL,
+                from_planet);
+
+            _state_machine.setState(IS_LANDING_PRESSED, false);
+        }
+    }
+}
+
+Planet *SpaceScene::calcNearestPlanet()
+{
     /*
      *  In this big if statement is a very rudimental landing system for
      *  planets. This need definitely to be updated.
@@ -104,24 +127,26 @@ void SpaceScene::play()
      *  I could finally let it work correctly. To interact with a planet the
      *  ship must be in a range from 0 to 100 units away from the targeting
      *  planet.
-     *  TODO I need a find abstraction for this one.
      */
-    std::unique_ptr<Planet> nearest_planet = nullptr; // TODO I could put this into the PlayerShip class
-    nearest_planet.reset(); // make sure the unique_pointer hold nothing.
+    Planet *nearest_planet = nullptr; // make sure the pointer holds nothing at begin
     float nearest_planet_distance = 100.f;
     for (auto &planet: _galaxy->getGalaxyPlanets())
     {
-        float distance = AssetUtils::calcDistanceBetweenAssets(_player_ship, planet);
+        float distance = ats::calcDistanceBetweenAssets(_player_ship, planet);
         if (distance < nearest_planet_distance)
         {
-            nearest_planet = std::make_unique<Planet>(planet);
+            nearest_planet = &planet;
             nearest_planet_distance = distance;
         }
     }
+    return nearest_planet;
+}
 
+void SpaceScene::setPlanetLandingText(Planet *nearest_planet)
+{
     if (nearest_planet)
     {
-        if (AssetUtils::calcDistanceBetweenAssets(_player_ship, *nearest_planet) <= 500.f)
+        if (ats::calcDistanceBetweenAssets(_player_ship, *nearest_planet) <= 500.f)
         {
             _state_machine.setState(PLANET_IN_RANGE, true);
             _text.setPosition(nearest_planet->getPos().x,
@@ -133,23 +158,6 @@ void SpaceScene::play()
         _state_machine.setState(PLANET_IN_RANGE, false);
     }
     // end of planet landing calculation stuff
-
-    // this is ugly but it works.
-    // TODO maybe adding a timer before adding the resources to the inventory?
-    if (nearest_planet && _state_machine.getState(PLANET_IN_RANGE))
-    {
-        if (_state_machine.getState(IS_LANDING_PRESSED))
-        {
-            // get random resource from nearest planet
-            int from_planet = nearest_planet
-                ->harvestResource(Resource::ResourceType::METAL);
-            // adding these resource to the players inventory
-            _resource_inventory.addResource(Resource::ResourceType::METAL,
-                from_planet);
-
-            _state_machine.setState(IS_LANDING_PRESSED, false);
-        }
-    }
 }
 
 void SpaceScene::setupStaticRenderer(Renderer &renderer)

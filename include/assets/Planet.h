@@ -5,7 +5,7 @@
 #ifndef PLANET_H
 #define PLANET_H
 
-#include "PlanetUtils.h"
+#include "PlanetTypes.h"
 #include "resources/ResourceInventory.h"
 
 #include <string>
@@ -23,15 +23,16 @@ public:
     ~Planet() = default;
     Planet(const Planet &other);
     Planet(const std::string &planet_name, const sf::Vector2f &size,
-        const PlanetUtils::PlanetType &type);
+        const pts::PlanetType &type);
     const sf::Vector2f &getPos() const;
     void setPos(const sf::Vector2f &pos);
-    int harvestResource(const Resource::ResourceType &type);
+    int harvestResource(const res::ResourceType &type);
 private:
     std::string _planet_name;
     ResourceInventory _planet_deposit;
     mutable sf::RectangleShape _planet_rec;
 
+    void fillPlanetDeposit(const pts::PlanetType &type);
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 };
 

@@ -5,7 +5,7 @@
 #ifndef RANDOMUTILS_H
 #define RANDOMUTILS_H
 
-#include "assets/PlanetUtils.h"
+#include "assets/PlanetTypes.h"
 
 /**
  * This namespace contains helper functions for random number generating.
@@ -20,6 +20,12 @@ namespace RandomUtils
 
     unsigned int randomSeed();
 
+    /**
+     * @param min
+     * @param max
+     * @return
+     * @note    This is based on the saved seed!
+     */
     int randomInt(unsigned int min, unsigned int max);
 
     /**
@@ -31,7 +37,21 @@ namespace RandomUtils
      */
     float randomFloat(unsigned int min, unsigned int max);
 
-    PlanetUtils::PlanetType randomPlanetType();
+    pts::PlanetType randomPlanetType();
+
+    /**
+     * Will generate a random amount of the given resource type.
+     * Because the amount of resources are constraint to the planet type this is
+     * given as well.
+     *
+     * @param min   The minimal amount of resource generating.
+     * @param max   The maximal amount of resource generating.
+     * @return  The amount of resource.
+     * @note    This will generate REAL random numbers WITHOUT a seed. So when
+     * a galaxy is generated on a seed the planets may be the same but the
+     * amount of resource on them are different. And that ok.
+     */
+    int randomResourceAmount(int min, int max);
 }
 
 #endif //RANDOMUTILS_H

@@ -6,6 +6,8 @@
 
 #include <random>
 
+#include "resources/ResourceType.h"
+
 namespace
 {
     std::mt19937_64 gen(std::random_device{}());
@@ -25,26 +27,26 @@ unsigned int RandomUtils::randomSeed()
 
 int RandomUtils::randomInt(unsigned int min, unsigned int max)
 {
-    // gen.seed(124);
-    // static std::random_device rd;
-    // static std::mt19937 gen(rd());
     std::uniform_int_distribution dist(min, max);
     return dist(gen);
 }
 
 float RandomUtils::randomFloat(unsigned int min, unsigned int max)
 {
-    // static std::random_device rd;
-    // static std::mt19937 gen(rd());
     std::uniform_real_distribution<float> dist(min, max);
     return dist(gen);
 }
 
-PlanetUtils::PlanetType RandomUtils::randomPlanetType()
+pts::PlanetType RandomUtils::randomPlanetType()
 {
-    // static std::random_device rd;
-    // static std::mt19937 gen(rd());
     std::uniform_real_distribution<float> dist(0, 4);
-    return static_cast<PlanetUtils::PlanetType>(dist(gen));
+    return static_cast<pts::PlanetType>(dist(gen));
 }
 
+int RandomUtils::randomResourceAmount(int min, int max)
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<int> dist(min, max);
+    return dist(gen);
+}

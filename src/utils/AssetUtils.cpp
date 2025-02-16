@@ -10,7 +10,7 @@
 
 #include <cmath>
 
-float AssetUtils::calcDistanceBetweenAssets(const PlayerShip &player, const Planet &target_planet)
+float ats::calcDistanceBetweenAssets(const PlayerShip &player, const Planet &target_planet)
 {
     sf::Vector2f center_pos_player(player.getPos().x / 2,
         player.getPos().y / 2);
@@ -25,7 +25,7 @@ float AssetUtils::calcDistanceBetweenAssets(const PlayerShip &player, const Plan
     return real_distance;
 }
 
-float AssetUtils::calcDistanceBetweenAssets(const Planet &source, const Planet &target)
+float ats::calcDistanceBetweenAssets(const Planet &source, const Planet &target)
 {
     sf::Vector2f center_pos_source(source.getPos().x / 2,
         source.getPos().y / 2);

@@ -11,12 +11,11 @@
 #include "assets/PlayerShip.h"
 #include "ui/GalaxyJumpUI.h"
 #include "core/statemachine/StateMachine.h"
+#include "ui/ResourceOverlay.h"
+#include "resources/ResourceInventory.h"
 
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Font.hpp>
-
-#include "../ui/ResourceOverlay.h"
-#include "resources/ResourceInventory.h"
 
 class Galaxy;
 class GalaxyJumpUI;
@@ -56,6 +55,8 @@ private:
     ResourceOverlay *_resource_overlay;
 
     void mapHandling(sf::Event &event);
+    Planet *calcNearestPlanet();
+    void setPlanetLandingText(Planet *nearest_planet);
 };
 
 #endif //SPACESCENE_H

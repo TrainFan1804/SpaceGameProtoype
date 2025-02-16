@@ -8,7 +8,7 @@
 #include <assets/PlayerShip.h>
 #include <assets/Planet.h>
 
-namespace AssetUtils
+namespace ats
 {
     /**
      * This need to be optimized especially when working with multiple planets in

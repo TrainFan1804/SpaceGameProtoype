@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics/Color.hpp>
 
-namespace PlanetUtils
+namespace pts
 {
     enum PlanetType
     {

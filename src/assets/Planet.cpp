@@ -14,15 +14,13 @@ Planet::Planet(const Planet &other)
 }
 
 Planet::Planet(const std::string &planet_name, const sf::Vector2f &size,
-    const PlanetUtils::PlanetType &type)
+    const pts::PlanetType &type)
     : _planet_name(planet_name)
 {
     _planet_rec.setSize(size);
     _planet_rec.setOrigin(_planet_rec.getSize().x / 2, _planet_rec.getSize().y / 2);
-    _planet_rec.setFillColor(PlanetUtils::getPlanetColor(type));
-    // TODO why is the next line executed multiple times? Probably is something
-    // wrong with the copy or move constructor...
-    _planet_deposit.addResource(Resource::ResourceType::METAL, 10);
+    _planet_rec.setFillColor(pts::getPlanetColor(type));
+    fillPlanetDeposit(type);
 }
 
 const sf::Vector2f &Planet::getPos() const
@@ -35,7 +33,7 @@ void Planet::setPos(const sf::Vector2f &pos)
     _planet_rec.setPosition(pos);
 }
 
-int Planet::harvestResource(const Resource::ResourceType &type)
+int Planet::harvestResource(const res::ResourceType &type)
 {
     int temp = _planet_deposit.getResourceAmount(type);
     if (_planet_deposit.removeResource(type, temp))
@@ -43,6 +41,15 @@ int Planet::harvestResource(const Resource::ResourceType &type)
         return temp;
     }
     return 0;
+}
+
+void Planet::fillPlanetDeposit(const pts::PlanetType &type)
+{
+    for (auto res : res::RESOURCE_TYPES)
+    {
+        int amount = res::generateResource(type, res);
+        _planet_deposit.addResource(res, amount);
+    }
 }
 
 void Planet::draw(sf::RenderTarget &target, sf::RenderStates states) const

@@ -4,19 +4,19 @@
 
 #include "resources/ResourceInventory.h"
 
-int ResourceInventory::getResourceAmount(const Resource::ResourceType &res)
+int ResourceInventory::getResourceAmount(const res::ResourceType &res)
 {
     return _resources[res];
 }
 
-void ResourceInventory::addResource(const Resource::ResourceType &res, int amount)
+void ResourceInventory::addResource(const res::ResourceType &res, int amount)
 {
     _resources[res] += amount;
     if (_overlay)
         _overlay->setData(this);
 }
 
-bool ResourceInventory::removeResource(const Resource::ResourceType &res, int amount)
+bool ResourceInventory::removeResource(const res::ResourceType &res, int amount)
 {
     if (amount >= _resources[res])
     {

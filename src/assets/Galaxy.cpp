@@ -80,7 +80,7 @@ bool Galaxy::isValidPos(Planet &new_planet) const
 {
     for (auto planet : _planets)
     {
-        if (AssetUtils::calcDistanceBetweenAssets(new_planet, planet) <= 100)
+        if (ats::calcDistanceBetweenAssets(new_planet, planet) <= 100)
         {
             return false;
         }

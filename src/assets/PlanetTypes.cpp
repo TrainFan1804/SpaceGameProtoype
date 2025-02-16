@@ -2,9 +2,9 @@
 // Created by o.le on 09.02.25.
 //
 
-#include "assets/PlanetUtils.h"
+#include "assets/PlanetTypes.h"
 
-sf::Color PlanetUtils::getPlanetColor(const PlanetType &type)
+sf::Color pts::getPlanetColor(const PlanetType &type)
 {
     switch (type)
     {

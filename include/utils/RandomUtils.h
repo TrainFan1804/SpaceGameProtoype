@@ -6,6 +6,7 @@
 #define RANDOMUTILS_H
 
 #include "assets/PlanetTypes.h"
+#include "resources/ResourceType.h"
 
 /**
  * This namespace contains helper functions for random number generating.
@@ -33,7 +34,8 @@ namespace RandomUtils
      *
      * @param min   The minimal value of the random value.
      * @param max   The maximal value of the random value.
-     * @return  The generated random value.
+     * @return  The generated random value. The returned value will be ANY value
+     * between min and max (excluded). So values like 2.34 are possible.
      */
     float randomFloat(unsigned int min, unsigned int max);
 
@@ -52,6 +54,8 @@ namespace RandomUtils
      * amount of resource on them are different. And that ok.
      */
     int randomResourceAmount(int min, int max);
+
+    res::ResourceType randomResourceType();
 }
 
 #endif //RANDOMUTILS_H

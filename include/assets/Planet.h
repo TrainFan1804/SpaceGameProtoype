@@ -26,7 +26,7 @@ public:
         const pts::PlanetType &type);
     const sf::Vector2f &getPos() const;
     void setPos(const sf::Vector2f &pos);
-    int harvestResource(const res::ResourceType &type);
+    int harvestResource(const res::ResourceType &type, int amount);
 private:
     std::string _planet_name;
     ResourceInventory _planet_deposit;

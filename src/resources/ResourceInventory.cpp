@@ -18,7 +18,7 @@ void ResourceInventory::addResource(const res::ResourceType &res, int amount)
 
 bool ResourceInventory::removeResource(const res::ResourceType &res, int amount)
 {
-    if (amount >= _resources[res])
+    if (amount <= _resources[res])
     {
         _resources[res] -= amount;
         return true;

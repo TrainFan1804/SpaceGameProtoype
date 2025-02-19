@@ -3,10 +3,9 @@
 //
 
 #include "utils/RandomUtils.h"
+#include "resources/ResourceType.h"
 
 #include <random>
-
-#include "resources/ResourceType.h"
 
 namespace
 {
@@ -20,8 +19,8 @@ void RandomUtils::setSeed(unsigned int seed)
 
 unsigned int RandomUtils::randomSeed()
 {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
+    std::random_device rd;
+    std::mt19937 gen(rd());
     return gen();
 }
 
@@ -33,20 +32,28 @@ int RandomUtils::randomInt(unsigned int min, unsigned int max)
 
 float RandomUtils::randomFloat(unsigned int min, unsigned int max)
 {
-    std::uniform_real_distribution<float> dist(min, max);
+    std::uniform_real_distribution<float >dist(min, max);
     return dist(gen);
 }
 
 pts::PlanetType RandomUtils::randomPlanetType()
 {
-    std::uniform_real_distribution<float> dist(0, 4);
+    std::uniform_int_distribution dist(0, pts::COUNT - 1);
     return static_cast<pts::PlanetType>(dist(gen));
 }
 
 int RandomUtils::randomResourceAmount(int min, int max)
 {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<int> dist(min, max);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution dist(min, max);
     return dist(gen);
+}
+
+res::ResourceType RandomUtils::randomResourceType()
+{
+    // int_distribution will create a value between a and b (included) so
+    // COUNT - 1
+    std::uniform_int_distribution dist(0, res::COUNT - 1);
+    return static_cast<res::ResourceType>(dist(gen));
 }

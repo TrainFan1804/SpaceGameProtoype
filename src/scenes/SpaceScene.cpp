@@ -10,6 +10,8 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
+#include "utils/RandomUtils.h"
+
 /**
  * This flag will be true if player press button for landing.
  */
@@ -102,13 +104,16 @@ void SpaceScene::play()
     {
         if (_state_machine.getState(IS_LANDING_PRESSED))
         {
-            // TODO now I can add the mechanic for random resource farming and amount of it
+            // this should make the farming process relatively random.
+            // Later the farming process should be constraint to the ships
+            // upgraded farm module.
+            res::ResourceType farm_mat = RandomUtils::randomResourceType();
+            int farm_amount = RandomUtils::randomResourceAmount(0, 100);
             // get random resource from nearest planet
             int from_planet = nearest_planet
-                ->harvestResource(res::ResourceType::METAL);
+                ->harvestResource(farm_mat, farm_amount);
             // adding these resource to the players inventory
-            _resource_inventory.addResource(res::ResourceType::METAL,
-                from_planet);
+            _resource_inventory.addResource(farm_mat, from_planet);
 
             _state_machine.setState(IS_LANDING_PRESSED, false);
         }

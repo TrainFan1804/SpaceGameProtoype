@@ -11,7 +11,7 @@ namespace pts
 {
     enum PlanetType
     {
-        EARTH_LIKE, TOXIC, HOT, ICE
+        EARTH_LIKE, TOXIC, HOT, ICE, COUNT
     };
 
     sf::Color getPlanetColor(const PlanetType &planetType);

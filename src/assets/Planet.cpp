@@ -33,22 +33,21 @@ void Planet::setPos(const sf::Vector2f &pos)
     _planet_rec.setPosition(pos);
 }
 
-int Planet::harvestResource(const res::ResourceType &type)
+int Planet::harvestResource(const res::ResourceType &type, int amount)
 {
-    int temp = _planet_deposit.getResourceAmount(type);
-    if (_planet_deposit.removeResource(type, temp))
+    if (_planet_deposit.removeResource(type, amount))
     {
-        return temp;
+        return amount;
     }
     return 0;
 }
 
 void Planet::fillPlanetDeposit(const pts::PlanetType &type)
 {
-    for (auto res : res::RESOURCE_TYPES)
+    for (int res = 0; res < res::COUNT; res++)
     {
-        int amount = res::generateResource(type, res);
-        _planet_deposit.addResource(res, amount);
+        int amount = res::generateResource(type, static_cast<res::ResourceType>(res));
+        _planet_deposit.addResource(static_cast<res::ResourceType>(res), amount);
     }
 }
 

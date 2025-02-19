@@ -15,6 +15,7 @@ std::string res::getResourceTypeName(const ResourceType &type)
     case WATER: return "WATER";
     case ORGANIC: return "ORGANIC";
     }
+    return nullptr; // shouldn't happen. Ever.
 }
 
 int res::generateResource(const pts::PlanetType &planet, const ResourceType &res)

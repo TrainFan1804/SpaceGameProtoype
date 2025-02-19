@@ -10,6 +10,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
+#include "core/debug/Debug.h"
 #include "utils/RandomUtils.h"
 
 /**
@@ -115,6 +116,7 @@ void SpaceScene::play()
             // adding these resource to the players inventory
             _resource_inventory.addResource(farm_mat, from_planet);
 
+            deb::Logger::getInstance().log("Resource inventory created");
             _state_machine.setState(IS_LANDING_PRESSED, false);
         }
     }

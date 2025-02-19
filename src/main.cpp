@@ -5,10 +5,11 @@
 #include <Game.h>
 #include "GameSettings.h"
 #include <scenes/SpaceScene.h>
-
+#include "core/debug/Debug.h"
 
 int main()
 {
+    deb::Logger::init();
     /*
      *  sf::Style::Titlebar is needed to make the window floating on my system.
      */
@@ -29,5 +30,6 @@ int main()
         game.render();
         window.display();
     }
+    deb::Logger::shutdown();
     return 0;
 }

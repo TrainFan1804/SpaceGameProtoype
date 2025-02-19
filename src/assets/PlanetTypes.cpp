@@ -4,6 +4,8 @@
 
 #include "assets/PlanetTypes.h"
 
+#include <stddef.h>
+
 sf::Color pts::getPlanetColor(const PlanetType &type)
 {
     switch (type)
@@ -13,4 +15,5 @@ sf::Color pts::getPlanetColor(const PlanetType &type)
     case HOT: return sf::Color::Red;
     case ICE: return sf::Color::Cyan;
     }
+    return static_cast<sf::Color>(NULL);    // this should never be returned
 }

@@ -5,6 +5,8 @@
 #ifndef SPACESCENE_H
 #define SPACESCENE_H
 
+#include <memory>
+
 #include "GameScene.h"
 #include "core/renderer/Renderer.h"
 #include "assets/Galaxy.h"
@@ -45,7 +47,7 @@ public:
 private:
     sf::View *_camera;  // I should remove the reference and create it in the scene directly
     PlayerShip _player_ship;
-    Galaxy *_galaxy;
+    std::unique_ptr<Galaxy> _galaxy;
     GalaxyJumpUI *_galaxy_jump_ui;
     StateMachine _state_machine;
     sf::Font _font;

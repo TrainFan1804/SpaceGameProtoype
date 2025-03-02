@@ -25,7 +25,7 @@ constexpr int PLANET_IN_RANGE = 1;
 SpaceScene::SpaceScene()
     : _player_ship(sf::Vector2f(100, 200))
 {
-    _galaxy = Galaxy::createGalaxy();
+    _galaxy = std::make_unique<Galaxy>(Galaxy::createGalaxy());
     _galaxy_jump_ui = new GalaxyJumpUI(*_galaxy);
 
     _camera = new sf::View(sf::FloatRect(0.f, 0.f, Settings::WINDOW_WIDTH, Settings::WINDOW_HEIGHT));
@@ -113,10 +113,17 @@ void SpaceScene::play()
             // get random resource from nearest planet
             int from_planet = nearest_planet
                 ->harvestResource(farm_mat, farm_amount);
+            /*
+             * I could also check if the player will farm 0 res but I wont
+             */
+            if (from_planet == 0) return;
             // adding these resource to the players inventory
             _resource_inventory.addResource(farm_mat, from_planet);
 
-            deb::Logger::getInstance().log("Resource inventory created");
+            deb::Logger::getInstance().log("Farming " +
+                std::to_string(from_planet) + " " +
+                res::getResourceTypeName(farm_mat) + " from planet " +
+                nearest_planet->to_string());
             _state_machine.setState(IS_LANDING_PRESSED, false);
         }
     }
@@ -125,7 +132,7 @@ void SpaceScene::play()
 Planet *SpaceScene::calcNearestPlanet()
 {
     /*
-     *  In this big if statement is a very rudimental landing system for
+     *  In this big if statement is a very rudimentary landing system for
      *  planets. This need definitely to be updated.
      *
      *  This doesn't work anymore when working with multiple planets per
@@ -169,7 +176,7 @@ void SpaceScene::setPlanetLandingText(Planet *nearest_planet)
 
 void SpaceScene::setupStaticRenderer(Renderer &renderer)
 {
-    renderer.addAsset(_galaxy);
+    renderer.addAsset(_galaxy.get());
     renderer.addAsset(&_player_ship);
     renderer.addAsset(&_text);
     renderer.addAsset(_galaxy_jump_ui);

@@ -16,6 +16,28 @@ namespace deb
     namespace
     {
         const auto BASE_PATH = std::string(LOG_FILE_PATH);
+
+        std::string getStatusString(LogLevel status)
+        {
+            switch (status)
+            {
+            case DEBUG: return "DEBUG";
+            case INFO: return "INFO";
+            case WARNING: return "WARNING";
+            case ERROR: return "ERROR";
+            default: return "UNKNOWN";
+            }
+        }
+
+        std::string getCurrentTimestamp(const std::string &format)
+        {
+            auto time_now = std::time(nullptr);
+            auto tm = *std::localtime(&time_now);
+
+            std::ostringstream oss;
+            oss << std::put_time(&tm, format.c_str());
+            return oss.str();
+        }
     }
 
     void Logger::init()
@@ -44,7 +66,8 @@ namespace deb
     void Logger::log(const std::string &message, LogLevel status)
     {
         std::string timestamp = getCurrentTimestamp("%Y-%m-%d %H:%M:%S");
-        std::string formatted_message = "[" + timestamp + "] " + deb::getStatusString(status) + ": " + message;
+        std::string formatted_message = "[" + timestamp + "] " +
+            deb::getStatusString(status) + ": " + message;
         _log_file << formatted_message << std::endl;
     }
 
@@ -69,28 +92,6 @@ namespace deb
         if (_log_file.is_open())
         {
             _log_file.close();
-        }
-    }
-
-    std::string Logger::getCurrentTimestamp(const std::string &format)
-    {
-        auto time_now = std::time(nullptr);
-        auto tm = *std::localtime(&time_now);
-
-        std::ostringstream oss;
-        oss << std::put_time(&tm, format.c_str());
-        return oss.str();
-    }
-
-    std::string getStatusString(LogLevel status)
-    {
-        switch (status)
-        {
-            case DEBUG: return "DEBUG";
-            case INFO: return "INFO";
-            case WARNING: return "WARNING";
-            case ERROR: return "ERROR";
-            default: return "UNKNOWN";
         }
     }
 }

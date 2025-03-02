@@ -25,7 +25,7 @@ public:
      *
      * @return  The created galaxy.
      */
-    static Galaxy *createGalaxy();
+    static Galaxy createGalaxy();
 
     Galaxy(const std::string &galaxy_name);
 
@@ -38,10 +38,17 @@ public:
      */
     Galaxy(const std::string &galaxy_name, int planet_amount);
     ~Galaxy() = default;
-    Galaxy &operator=(Galaxy *galaxy);
+    Galaxy &operator=(const Galaxy &galaxy)
+    {
+        _galaxy_name = galaxy._galaxy_name;
+        _planets = galaxy._planets;
+        return *this;
+    }
 
     const std::string &getGalaxyName();
     std::vector<Planet> &getGalaxyPlanets();
+
+    const std::string to_string() const;
 
 private:
     std::string _galaxy_name;

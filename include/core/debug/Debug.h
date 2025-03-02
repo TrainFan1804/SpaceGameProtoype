@@ -25,16 +25,12 @@ namespace deb
         void log(const std::string &message);
         void log(const std::string &message, LogLevel status);
     private:
-        Logger();
-        ~Logger();
         std::ofstream _log_file;
 
+        Logger();
+        ~Logger();
         void setup();
-        std::string getCurrentTimestamp(const std::string &format);
-        std::string getStatusString();
     };
-
-    std::string getStatusString(LogLevel level);
 }
 
 #endif //DEBUG_H

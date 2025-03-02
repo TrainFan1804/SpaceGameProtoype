@@ -5,6 +5,7 @@
 #ifndef PLANETTYPES_H
 #define PLANETTYPES_H
 
+#include <string>
 #include <SFML/Graphics/Color.hpp>
 
 namespace pts
@@ -15,6 +16,7 @@ namespace pts
     };
 
     sf::Color getPlanetColor(const PlanetType &planetType);
+    std::string getPlanetTypeName(const PlanetType &type);
 }
 
 #endif //PLANETTYPES_H

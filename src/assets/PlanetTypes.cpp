@@ -4,8 +4,6 @@
 
 #include "assets/PlanetTypes.h"
 
-#include <stddef.h>
-
 sf::Color pts::getPlanetColor(const PlanetType &type)
 {
     switch (type)
@@ -16,4 +14,16 @@ sf::Color pts::getPlanetColor(const PlanetType &type)
     case ICE: return sf::Color::Cyan;
     }
     return static_cast<sf::Color>(NULL);    // this should never be returned
+}
+
+std::string pts::getPlanetTypeName(const PlanetType &type)
+{
+    switch (type)
+    {
+    case EARTH_LIKE: return "EARTH_LIKE";
+    case TOXIC: return "TOXIC";
+    case HOT: return "HOT";
+    case ICE: return "ICE";
+    }
+    return "NULL"; // shouldn't happen. Ever.
 }

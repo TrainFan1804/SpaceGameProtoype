@@ -10,6 +10,7 @@
 int main()
 {
     deb::Logger::init();
+    deb::Logger::getInstance().log("Start new game");
     /*
      *  sf::Style::Titlebar is needed to make the window floating on my system.
      */
@@ -30,6 +31,7 @@ int main()
         game.render();
         window.display();
     }
+    deb::Logger::getInstance().log("Closing game");
     deb::Logger::shutdown();
     return 0;
 }
